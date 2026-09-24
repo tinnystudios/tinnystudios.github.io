@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RPG Enemies demo</title>
+<meta name="description" content="Play the RPG Enemies demo in your browser: eight action-RPG enemy archetypes on the TinnyStudios Utility AI framework.">
+<style>
+  :root { --navy: #14213d; --orange: #f0a020; --bg: #0b1020; --text: #e6eaf2; --muted: #9aa6bd; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+  body { display: flex; flex-direction: column; overflow: hidden; }
+  a { color: #ffb43a; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .topbar { flex: none; background: var(--navy); border-bottom: 3px solid var(--orange); display: flex; align-items: center; gap: 16px; padding: 8px 16px; flex-wrap: wrap; }
+  .topbar .brand { font-weight: 700; font-size: 1.05rem; color: #fff; }
+  .topbar .brand span { color: var(--orange); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; margin-left: 8px; }
+  .topbar nav { display: flex; gap: 14px; font-size: 0.9rem; margin-left: auto; align-items: center; }
+  .topbar button { background: var(--orange); color: var(--navy); border: 0; border-radius: 4px; padding: 5px 11px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+  .topbar button.ghost { background: transparent; color: #d7deea; border: 1px solid #3a4a6e; }
+  .topbar button:hover { filter: brightness(1.1); }
+  #stage { flex: 1 1 auto; position: relative; min-height: 0; background: #000; }
+  #unity-canvas { width: 100%; height: 100%; display: block; background: #000; outline: none; }
+  #loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: radial-gradient(ellipse at center, #1a2a52 0%, var(--bg) 70%); }
+  #loading .title { font-size: 1.6rem; font-weight: 700; color: #fff; }
+  #loading .sub { color: var(--muted); font-size: 0.95rem; max-width: 520px; text-align: center; padding: 0 16px; }
+  #bar { width: min(420px, 80vw); height: 10px; background: #1f2a44; border-radius: 5px; overflow: hidden; border: 1px solid #2c3a5e; }
+  #bar div { height: 100%; width: 0; background: var(--orange); transition: width 0.2s; }
+  #pct { color: var(--muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+  #warning { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); z-index: 5; max-width: 90%; }
+  #warning div { background: #d9534f; color: #fff; padding: 8px 12px; border-radius: 4px; margin-bottom: 6px; font-size: 0.9rem; }
+  #warning div.warn { background: #f0a020; color: var(--navy); }
+  #controls { position: absolute; right: 12px; top: 12px; z-index: 4; background: rgba(20, 33, 61, 0.92); border: 1px solid #3a4a6e; border-radius: 6px; padding: 10px 14px; font-size: 0.82rem; line-height: 1.45; max-width: 340px; max-height: calc(100% - 24px); overflow: auto; }
+  #controls h3 { margin: 0 0 6px; font-size: 0.9rem; color: var(--orange); display: flex; justify-content: space-between; align-items: center; }
+  #controls h3 button { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0 4px; }
+  #controls table { border-collapse: collapse; width: 100%; }
+  #controls td { padding: 2px 6px 2px 0; vertical-align: top; }
+  #controls td:first-child { white-space: nowrap; color: #fff; font-weight: 600; }
+  #controls.hidden { display: none; }
+  .foot { flex: none; background: var(--navy); color: var(--muted); font-size: 0.78rem; padding: 5px 16px; display: flex; gap: 16px; flex-wrap: wrap; }
+  @media (max-width: 700px) { #controls { display: none; } .topbar nav .hide-sm { display: none; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../">RPG Enemies<span>Demo</span></a>
+  <nav>
+    <a class="hide-sm" href="../">Documentation</a>
+    <a class="hide-sm" href="../manual/">Manual</a>
+    <button class="ghost" id="btn-controls" type="button">Controls</button>
+    <button id="btn-full" type="button" disabled>Fullscreen</button>
+  </nav>
+</header>
+<div id="stage">
+  <canvas id="unity-canvas" tabindex="-1"></canvas>
+  <div id="warning"></div>
+  <div id="loading">
+    <div class="title">RPG Enemies demo</div>
+    <div class="sub">Loading the demo camp. Desktop browser with a keyboard and mouse recommended. The first load downloads the whole demo and is cached for next time.</div>
+    <div id="bar"><div></div></div>
+    <div id="pct">0%</div>
+  </div>
+  <div id="controls" class="hidden">
+    <h3>Controls <button type="button" id="btn-close" title="Hide">&times;</button></h3>
+    <table>
+      <tr><td>W A S D</td><td>Move</td></tr>
+      <tr><td>Shift</td><td>Sprint (enemies hear it from further away)</td></tr>
+      <tr><td>Space</td><td>Dodge roll, invulnerable while rolling</td></tr>
+      <tr><td>Left mouse</td><td>Light attack</td></tr>
+      <tr><td>E / middle mouse</td><td>Heavy attack, breaks most guards</td></tr>
+      <tr><td>Hold right mouse</td><td>Block. Just before a hit lands it is a parry</td></tr>
+      <tr><td>Q</td><td>Heal (some enemies punish it)</td></tr>
+      <tr><td>F</td><td>Pick up or throw objects and weapons</td></tr>
+      <tr><td>G</td><td>Drop the held weapon</td></tr>
+      <tr><td>1-7</td><td>Teleport to a zone</td></tr>
+      <tr><td>F1</td><td>AI Debug View: every enemy's thinking</td></tr>
+      <tr><td>F2</td><td>God mode</td></tr>
+      <tr><td>R</td><td>Reset the scene</td></tr>
+      <tr><td>Tab</td><td>Hide the in-game controls panel</td></tr>
+      <tr><td>Mouse wheel</td><td>Zoom the camera</td></tr>
+    </table>
+  </div>
+</div>
+<div class="foot">
+  <span>RPG Enemies - Combat AI + Utility AI Included &middot; TinnyStudios</span>
+  <span>Click the game once so it receives keyboard input.</span>
+  <span><a href="../">Documentation</a> &middot; <a href="mailto:tinnystudios@gmail.com">Support</a></span>
+</div>
+<script>
+  var canvas = document.querySelector("#unity-canvas");
+  function unityShowBanner(msg, type) {
+    var box = document.querySelector("#warning");
+    var div = document.createElement("div");
+    div.innerHTML = msg;
+    if (type === "warning") div.className = "warn";
+    box.appendChild(div);
+    if (type !== "error") setTimeout(function () { div.remove(); }, 5000);
+  }
+  var buildUrl = "Build";
+  var config = {
+    arguments: [],
+    dataUrl: buildUrl + "/RPGEnemiesDemo.data.unityweb",
+    frameworkUrl: buildUrl + "/RPGEnemiesDemo.framework.js.unityweb",
+    codeUrl: buildUrl + "/RPGEnemiesDemo.wasm.unityweb",
+    streamingAssetsUrl: "StreamingAssets",
+    companyName: "TinnyStudios",
+    productName: "RPG Enemies Demo",
+    productVersion: "1.0",
+    showBanner: unityShowBanner,
+  };
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    unityShowBanner("This demo needs a keyboard and mouse. It may load on a phone but it is not playable there.", "warning");
+    config.devicePixelRatio = 1;
+  }
+  var controls = document.querySelector("#controls");
+  document.querySelector("#btn-controls").onclick = function () { controls.classList.toggle("hidden"); };
+  document.querySelector("#btn-close").onclick = function () { controls.classList.add("hidden"); };
+
+  var script = document.createElement("script");
+  script.src = buildUrl + "/RPGEnemiesDemo.loader.js";
+  script.onload = function () {
+    createUnityInstance(canvas, config, function (progress) {
+      document.querySelector("#bar div").style.width = (100 * progress) + "%";
+      document.querySelector("#pct").textContent = Math.round(100 * progress) + "%";
+    }).then(function (unityInstance) {
+      document.querySelector("#loading").style.display = "none";
+      var full = document.querySelector("#btn-full");
+      full.disabled = false;
+      full.onclick = function () { unityInstance.SetFullscreen(1); };
+      canvas.focus();
+    }).catch(function (message) {
+      unityShowBanner(message, "error");
+    });
+  };
+  script.onerror = function () { unityShowBanner("The demo files could not be loaded. Try reloading the page.", "error"); };
+  document.body.appendChild(script);
+</script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RPG Enemies documentation</title><meta name="description" content="Eight action-RPG enemy archetypes on the TinnyStudios Utility AI framework, which comes included: senses and awareness, group tactics, readable attacks, difficulty profiles, wave encounters, a feedback system and animation tooling."><style>
+@page { size: A4; margin: 22mm 18mm 22mm 18mm; }
+@page :first { margin: 0; }
+html { font-size: 10.5pt; }
+body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: #1f2933; line-height: 1.45; margin: 0; }
+a { color: #1d5fa8; text-decoration: none; }
+p { margin: 0 0 2.6mm; orphans: 3; widows: 3; }
+strong { font-weight: 600; }
+code { font-family: Consolas, "Cascadia Mono", "Courier New", monospace; font-size: 90%; background: #f1f3f6; padding: 0 2px; border-radius: 2px; }
+pre { font-family: Consolas, "Cascadia Mono", "Courier New", monospace; font-size: 8.5pt; line-height: 1.42; background: #f5f6f8;
+       border: 1px solid #dfe3e8; border-left: 3px solid #c9ced6; padding: 3mm 3.5mm; white-space: pre-wrap; word-break: break-word;
+       break-inside: avoid; margin: 0 0 3.5mm; }
+pre code { background: none; font-size: 100%; padding: 0; }
+.codehilite { background: none; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #f0f0f0; }
+.codehilite .c { color: #60A0B0; font-style: italic } /* Comment */
+.codehilite .err { border: 1px solid #F00 } /* Error */
+.codehilite .k { color: #007020; font-weight: bold } /* Keyword */
+.codehilite .o { color: #666 } /* Operator */
+.codehilite .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #007020 } /* Comment.Preproc */
+.codehilite .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.codehilite .gd { color: #A00000 } /* Generic.Deleted */
+.codehilite .ge { font-style: italic } /* Generic.Emph */
+.codehilite .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F00 } /* Generic.Error */
+.codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #00A000 } /* Generic.Inserted */
+.codehilite .go { color: #888 } /* Generic.Output */
+.codehilite .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #04D } /* Generic.Traceback */
+.codehilite .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #007020 } /* Keyword.Pseudo */
+.codehilite .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #902000 } /* Keyword.Type */
+.codehilite .m { color: #40A070 } /* Literal.Number */
+.codehilite .s { color: #4070A0 } /* Literal.String */
+.codehilite .na { color: #4070A0 } /* Name.Attribute */
+.codehilite .nb { color: #007020 } /* Name.Builtin */
+.codehilite .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.codehilite .no { color: #60ADD5 } /* Name.Constant */
+.codehilite .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.codehilite .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.codehilite .ne { color: #007020 } /* Name.Exception */
+.codehilite .nf { color: #06287E } /* Name.Function */
+.codehilite .nl { color: #002070; font-weight: bold } /* Name.Label */
+.codehilite .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.codehilite .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #BB60D5 } /* Name.Variable */
+.codehilite .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.codehilite .w { color: #BBB } /* Text.Whitespace */
+.codehilite .mb { color: #40A070 } /* Literal.Number.Bin */
+.codehilite .mf { color: #40A070 } /* Literal.Number.Float */
+.codehilite .mh { color: #40A070 } /* Literal.Number.Hex */
+.codehilite .mi { color: #40A070 } /* Literal.Number.Integer */
+.codehilite .mo { color: #40A070 } /* Literal.Number.Oct */
+.codehilite .sa { color: #4070A0 } /* Literal.String.Affix */
+.codehilite .sb { color: #4070A0 } /* Literal.String.Backtick */
+.codehilite .sc { color: #4070A0 } /* Literal.String.Char */
+.codehilite .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #4070A0 } /* Literal.String.Double */
+.codehilite .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.codehilite .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.codehilite .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.codehilite .sx { color: #C65D09 } /* Literal.String.Other */
+.codehilite .sr { color: #235388 } /* Literal.String.Regex */
+.codehilite .s1 { color: #4070A0 } /* Literal.String.Single */
+.codehilite .ss { color: #517918 } /* Literal.String.Symbol */
+.codehilite .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #06287E } /* Name.Function.Magic */
+.codehilite .vc { color: #BB60D5 } /* Name.Variable.Class */
+.codehilite .vg { color: #BB60D5 } /* Name.Variable.Global */
+.codehilite .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.codehilite .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.codehilite .il { color: #40A070 } /* Literal.Number.Integer.Long */
+.codehilite pre { background: #f5f6f8; }
+h1.chapter { break-before: page; font-size: 26pt; font-weight: 600; color: #14213d; margin: 0 0 7mm; padding-bottom: 3mm; border-bottom: 2px solid #f0a020; line-height: 1.15; }
+h1.chapter .hnum, h2 .hnum { color: #f0a020; }
+h1.chapter .hnum { margin-right: 3mm; }
+h2 { font-size: 15pt; font-weight: 600; color: #14213d; margin: 9mm 0 3mm; break-after: avoid; line-height: 1.25; clear: both; }
+h2 .hnum { margin-right: 1.5mm; }
+h3 { font-size: 12pt; font-weight: 600; color: #2b3a55; margin: 6mm 0 2mm; break-after: avoid; }
+h4 { font-size: 10.5pt; font-weight: 600; color: #2b3a55; margin: 4mm 0 1.5mm; break-after: avoid; }
+h1 + h2, h2 + h3 { margin-top: 2mm; }
+ul, ol { margin: 0 0 2.6mm; padding-left: 6mm; }
+li { margin-bottom: 1mm; }
+li > p { margin: 0 0 1mm; }
+hr { border: 0; border-top: 1px solid #dfe3e8; margin: 5mm 0; }
+table { border-collapse: collapse; width: 100%; font-size: 9pt; margin: 2mm 0 4.5mm; line-height: 1.35; }
+th, td { border: 1px solid #cfd5dd; padding: 1.4mm 2mm; vertical-align: top; text-align: left; }
+th { background: #e9edf3; font-weight: 600; color: #14213d; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+table.mid { font-size: 8.5pt; }
+table.wide { font-size: 7.6pt; }
+table.wide th, table.wide td { padding: 1mm 1.2mm; }
+table code { font-size: 92%; }
+blockquote.callout { border-left: 3px solid #f0a020; background: #fff8ec; padding: 2.5mm 3.5mm; margin: 0 0 3.5mm; break-inside: avoid; }
+blockquote.callout.tip { border-color: #2e9e6b; background: #eef8f2; }
+blockquote.callout.warning, blockquote.callout.important { border-color: #d9534f; background: #fdf0ef; }
+blockquote.callout p:last-child { margin-bottom: 0; }
+figure { margin: 3mm 0 4.5mm; break-inside: avoid; text-align: center; }
+figure img { max-width: 100%; height: auto; border: 1px solid #dfe3e8; border-radius: 2px; }
+figcaption { font-size: 8.5pt; color: #5b6573; margin-top: 1.5mm; text-align: center; line-height: 1.35; }
+figure.portrait { float: right; width: 34mm; margin: 0 0 2.5mm 5mm; }
+figure.portrait img { width: 100%; }
+figure.portrait figcaption { font-size: 8pt; }
+figure.small { width: 60%; margin-left: auto; margin-right: auto; }
+figure.half { width: 48%; }
+figure.third { width: calc((100% - 8mm) / 3); }
+figure.side { float: right; width: 46%; margin: 0 0 3mm 5mm; }
+figure.side img { width: 100%; }
+figure.side figcaption { font-size: 8pt; }
+h1.chapter, table, pre, .figrow, blockquote.callout { clear: both; }
+.float-group { display: flow-root; break-inside: avoid; }
+.figrow { display: flex; gap: 4mm; align-items: flex-start; margin: 3mm 0 4.5mm; break-inside: avoid; }
+.figrow figure { flex: 1 1 0; margin: 0; }
+.pending-box { border: 1px dashed #c9ced6; background: #f7f8fa; color: #8a94a1; padding: 14mm 6mm; font-size: 10pt; }
+figure.portrait .pending-box { padding: 16mm 2mm; font-size: 8pt; }
+table + p, pre + p { margin-top: 1mm; }
+
+/* cover */
+.cover { position: relative; width: 210mm; height: 296.5mm; overflow: hidden; background: #fff; }
+.cover .art { display: block; width: 210mm; height: 150mm; object-fit: cover; }
+.cover .art-missing { background: #14213d; }
+.cover .band { position: absolute; top: 150mm; left: 0; right: 0; height: 4mm; background: #f0a020; }
+.cover .titles { position: absolute; top: 170mm; left: 20mm; right: 20mm; }
+.cover .kicker { font-size: 11pt; letter-spacing: 0.3em; text-transform: uppercase; color: #f0a020; font-weight: 600; }
+.cover .title { font-size: 46pt; font-weight: 700; color: #14213d; margin: 2mm 0 0; line-height: 1.05; }
+.cover .sub { font-size: 18pt; color: #2b3a55; margin: 1.5mm 0 6mm; font-weight: 600; }
+.cover .blurb { font-size: 11pt; color: #3d4753; max-width: 150mm; }
+.cover .meta { position: absolute; bottom: 16mm; left: 20mm; right: 20mm; display: flex; justify-content: space-between; font-size: 10pt; color: #5b6573; border-top: 1px solid #dfe3e8; padding-top: 4mm; }
+.cover .meta .publisher { font-weight: 600; color: #14213d; }
+
+/* table of contents */
+.toc { break-before: page; }
+.toc h1 { font-size: 26pt; font-weight: 600; color: #14213d; margin: 0 0 7mm; padding-bottom: 3mm; border-bottom: 2px solid #f0a020; }
+.toc-entry a { display: flex; align-items: baseline; color: #1f2933; }
+.toc-entry.l1 { font-weight: 600; font-size: 11.5pt; margin-top: 3.2mm; }
+.toc-entry.l2 { font-size: 10pt; padding-left: 9mm; margin-top: 0.2mm; line-height: 1.38; }
+.t-num { flex: none; width: 9mm; color: #f0a020; }
+.toc-entry.l2 .t-num { width: 10mm; }
+.t-title { flex: none; max-width: 78%; }
+.t-dots { flex: 1; border-bottom: 1px dotted #9aa3ad; margin: 0 2mm; min-width: 6mm; transform: translateY(-1mm); }
+.t-page { flex: none; min-width: 8mm; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* screen */
+html { font-size: 16px; }
+body { background: #f6f7f9; color: #1f2933; }
+.cover, .toc { display: none; }
+a:hover { text-decoration: underline; }
+.topbar { background: #14213d; color: #fff; border-bottom: 4px solid #f0a020; }
+.topbar .in { max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+.topbar .brand { font-weight: 700; font-size: 1.15rem; color: #fff; }
+.topbar .brand span { color: #f0a020; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; margin-left: 10px; }
+.topbar nav a { color: #d7deea; margin-right: 16px; font-size: 0.95rem; }
+.topbar nav a.on { color: #fff; font-weight: 600; border-bottom: 2px solid #f0a020; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; display: flex; gap: 40px; align-items: flex-start; }
+.side { flex: 0 0 280px; position: sticky; top: 0; max-height: 100vh; overflow-y: auto; padding: 24px 0 24px; font-size: 0.86rem; line-height: 1.4; }
+.side .pdf { display: inline-block; background: #f0a020; color: #14213d; font-weight: 600; padding: 6px 12px; border-radius: 4px; margin-bottom: 16px; }
+.side .pdf:hover { background: #ffb43a; text-decoration: none; }
+.side a { color: #2b3a55; display: block; padding: 3px 0; }
+.side .c { font-weight: 600; margin-top: 10px; color: #14213d; }
+.side .s { padding-left: 16px; color: #4b5666; }
+.side .n { color: #f0a020; margin-right: 6px; }
+main { flex: 1 1 0; min-width: 0; background: #fff; padding: 12px 40px 48px; margin: 24px 0 48px; border: 1px solid #e3e7ec; border-radius: 6px; }
+main p, main li { font-size: 1rem; line-height: 1.55; }
+main h1.chapter { font-size: 2rem; margin: 40px 0 20px; }
+main h2 { font-size: 1.45rem; margin: 36px 0 12px; }
+main h3 { font-size: 1.15rem; margin: 26px 0 8px; }
+main h4 { font-size: 1rem; }
+main table, main table.mid, main table.wide { font-size: 0.88rem; }
+main table.wide th, main table.wide td { padding: 4px 8px; }
+main pre { font-size: 0.86rem; white-space: pre; overflow-x: auto; }
+main code { font-size: 0.92em; }
+main figcaption { font-size: 0.86rem; }
+main figure.portrait { width: 150px; }
+main .figrow { gap: 16px; }
+.foot { max-width: 1240px; margin: 0 auto; padding: 0 24px 40px; color: #5b6573; font-size: 0.86rem; }
+@media (max-width: 900px) {
+  .wrap { flex-direction: column; gap: 0; }
+  .side { position: static; max-height: none; flex: none; width: 100%; padding-bottom: 0; }
+  .side details summary { cursor: pointer; font-weight: 600; color: #14213d; }
+  main { flex: none; width: 100%; box-sizing: border-box; padding: 8px 18px 32px; margin-top: 12px; }
+  main figure.side, main figure.portrait { float: none; width: 100%; margin: 12px 0; }
+  html, body { overflow-x: hidden; }
+  .side { box-sizing: border-box; }
+  main table { display: block; overflow-x: auto; }
+}
+@media (min-width: 901px) { .side details summary { display: none; } .side details { display: contents; } }
+
+.hero { position: relative; max-height: 380px; overflow: hidden; background: #14213d; }
+.hero img { display: block; width: 100%; height: 380px; object-fit: cover; }
+.hero .t { position: absolute; left: 0; right: 0; bottom: 0; background: linear-gradient(transparent, rgba(20,33,61,0.92)); color: #fff; padding: 60px 24px 24px; }
+.hero .t .in { max-width: 1240px; margin: 0 auto; }
+.hero h1 { margin: 0; font-size: 2.4rem; font-weight: 700; }
+.hero p { margin: 6px 0 0; font-size: 1.05rem; color: #d7deea; max-width: 760px; }
+.page { max-width: 1240px; margin: 0 auto; padding: 32px 24px 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.card { background: #fff; border: 1px solid #e3e7ec; border-radius: 6px; padding: 20px 22px; }
+.card h2 { margin: 0 0 8px; font-size: 1.3rem; }
+.card p { font-size: 0.95rem; color: #3d4753; }
+.card .links a { font-weight: 600; }
+.start { background: #fff; border: 1px solid #e3e7ec; border-radius: 6px; padding: 20px 26px; margin: 28px 0; }
+.start h2 { margin-top: 0; }
+.start li { margin-bottom: 8px; }
+</style></head><body>
+<header class="topbar"><div class="in"><a class="brand" href="./">RPG Enemies<span>Utility AI Included</span></a><nav><a href="./" class=on>Home</a><a href="./manual/">Manual</a><a href="./customization/">Customization</a><a href="./extending/">Code Extending</a></nav></div></header>
+<div class="hero"><img src="cover.jpg" alt=""><div class="t"><div class="in"><h1>RPG Enemies documentation</h1><p>Eight action-RPG enemy archetypes on the TinnyStudios Utility AI framework, which comes included: senses and awareness, group tactics, readable attacks, difficulty profiles, wave encounters, a feedback system and animation tooling.</p></div></div></div>
+<div class="page">
+<div class="cards"><div class="card"><h2><a href="manual/">Manual</a></h2><p>Eight action-RPG enemy archetypes on the TinnyStudios Utility AI framework, which comes included: senses and awareness, group tactics, readable attacks, difficulty profiles, wave encounters, a feedback system and animation tooling.</p><p class="links"><a href="manual/">Read online</a> &middot; <a href="RPGEnemies_Manual.pdf">PDF, 11 MB</a></p></div><div class="card"><h2><a href="customization/">Customization</a></h2><p>Make the enemies your own without writing code: your characters on their AI, weapons that sit right in the hand, your animations, attacks, sounds and effects, step by step.</p><p class="links"><a href="customization/">Read online</a> &middot; <a href="RPGEnemies_Customization.pdf">PDF, 6 MB</a></p></div><div class="card"><h2><a href="extending/">Code Extending</a></h2><p>Extend the enemies in C#: new actions and considerations, new kinds of attack, your own feedback outputs, and hooking up your own player, damage and movement.</p><p class="links"><a href="extending/">Read online</a> &middot; <a href="RPGEnemies_CodeExtending.pdf">PDF, 4 MB</a></p></div></div>
+<div class="start"><h2>Getting started</h2><ol>
+<li><strong>Import the package.</strong> The Utility AI core comes with it. On the first load, <em>RPG Enemies: Package Dependencies</em> offers to install the AI Navigation package (required) and Post Processing (optional, demo only). On URP it then offers to convert the pack's materials. The art ships for the Built-in pipeline; HDRP is not supported.</li>
+<li><strong>Press Play</strong> in <code>Demo/Scenes/RPGEnemiesDemo.unity</code>. Walk into the camp or press 1-7 to jump to a zone. F1 opens the AI debug view.</li>
+<li><strong>Your own scene:</strong> bake a NavMesh, drag prefabs from <code>Prefabs/Enemies</code> onto it, and add <em>Simple Combat Target</em> and a <em>Health</em> to your player. The Manual's Quick Start chapter takes it from there.</li>
+</ol>
+<p><strong>Requirements:</strong> Unity 6 (6000.0 or newer), Built-in Render Pipeline (URP after conversion), AI Navigation package, legacy Input Manager for the demo player.</p>
+<p><strong>Support:</strong> <a href="mailto:tinnystudios@gmail.com">tinnystudios@gmail.com</a>. Include your Unity version, render pipeline and the package version.</p>
+</div></div>
+<div class="foot">RPG Enemies 1.0 &middot; 24 September 2026 &middot; TinnyStudios &middot; Support: <a href="mailto:tinnystudios@gmail.com">tinnystudios@gmail.com</a></div></body></html>

@@ -1,0 +1,1881 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RPG Enemies &middot; Customization</title><meta name="description" content="Make the enemies your own without writing code: your characters on their AI, weapons that sit right in the hand, your animations, attacks, sounds and effects, step by step.">
+<style>
+@page { size: A4; margin: 22mm 18mm 22mm 18mm; }
+@page :first { margin: 0; }
+html { font-size: 10.5pt; }
+body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: #1f2933; line-height: 1.45; margin: 0; }
+a { color: #1d5fa8; text-decoration: none; }
+p { margin: 0 0 2.6mm; orphans: 3; widows: 3; }
+strong { font-weight: 600; }
+code { font-family: Consolas, "Cascadia Mono", "Courier New", monospace; font-size: 90%; background: #f1f3f6; padding: 0 2px; border-radius: 2px; }
+pre { font-family: Consolas, "Cascadia Mono", "Courier New", monospace; font-size: 8.5pt; line-height: 1.42; background: #f5f6f8;
+       border: 1px solid #dfe3e8; border-left: 3px solid #c9ced6; padding: 3mm 3.5mm; white-space: pre-wrap; word-break: break-word;
+       break-inside: avoid; margin: 0 0 3.5mm; }
+pre code { background: none; font-size: 100%; padding: 0; }
+.codehilite { background: none; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #f0f0f0; }
+.codehilite .c { color: #60A0B0; font-style: italic } /* Comment */
+.codehilite .err { border: 1px solid #F00 } /* Error */
+.codehilite .k { color: #007020; font-weight: bold } /* Keyword */
+.codehilite .o { color: #666 } /* Operator */
+.codehilite .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #007020 } /* Comment.Preproc */
+.codehilite .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.codehilite .gd { color: #A00000 } /* Generic.Deleted */
+.codehilite .ge { font-style: italic } /* Generic.Emph */
+.codehilite .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F00 } /* Generic.Error */
+.codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #00A000 } /* Generic.Inserted */
+.codehilite .go { color: #888 } /* Generic.Output */
+.codehilite .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #04D } /* Generic.Traceback */
+.codehilite .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #007020 } /* Keyword.Pseudo */
+.codehilite .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #902000 } /* Keyword.Type */
+.codehilite .m { color: #40A070 } /* Literal.Number */
+.codehilite .s { color: #4070A0 } /* Literal.String */
+.codehilite .na { color: #4070A0 } /* Name.Attribute */
+.codehilite .nb { color: #007020 } /* Name.Builtin */
+.codehilite .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.codehilite .no { color: #60ADD5 } /* Name.Constant */
+.codehilite .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.codehilite .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.codehilite .ne { color: #007020 } /* Name.Exception */
+.codehilite .nf { color: #06287E } /* Name.Function */
+.codehilite .nl { color: #002070; font-weight: bold } /* Name.Label */
+.codehilite .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.codehilite .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #BB60D5 } /* Name.Variable */
+.codehilite .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.codehilite .w { color: #BBB } /* Text.Whitespace */
+.codehilite .mb { color: #40A070 } /* Literal.Number.Bin */
+.codehilite .mf { color: #40A070 } /* Literal.Number.Float */
+.codehilite .mh { color: #40A070 } /* Literal.Number.Hex */
+.codehilite .mi { color: #40A070 } /* Literal.Number.Integer */
+.codehilite .mo { color: #40A070 } /* Literal.Number.Oct */
+.codehilite .sa { color: #4070A0 } /* Literal.String.Affix */
+.codehilite .sb { color: #4070A0 } /* Literal.String.Backtick */
+.codehilite .sc { color: #4070A0 } /* Literal.String.Char */
+.codehilite .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #4070A0 } /* Literal.String.Double */
+.codehilite .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.codehilite .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.codehilite .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.codehilite .sx { color: #C65D09 } /* Literal.String.Other */
+.codehilite .sr { color: #235388 } /* Literal.String.Regex */
+.codehilite .s1 { color: #4070A0 } /* Literal.String.Single */
+.codehilite .ss { color: #517918 } /* Literal.String.Symbol */
+.codehilite .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #06287E } /* Name.Function.Magic */
+.codehilite .vc { color: #BB60D5 } /* Name.Variable.Class */
+.codehilite .vg { color: #BB60D5 } /* Name.Variable.Global */
+.codehilite .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.codehilite .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.codehilite .il { color: #40A070 } /* Literal.Number.Integer.Long */
+.codehilite pre { background: #f5f6f8; }
+h1.chapter { break-before: page; font-size: 26pt; font-weight: 600; color: #14213d; margin: 0 0 7mm; padding-bottom: 3mm; border-bottom: 2px solid #f0a020; line-height: 1.15; }
+h1.chapter .hnum, h2 .hnum { color: #f0a020; }
+h1.chapter .hnum { margin-right: 3mm; }
+h2 { font-size: 15pt; font-weight: 600; color: #14213d; margin: 9mm 0 3mm; break-after: avoid; line-height: 1.25; clear: both; }
+h2 .hnum { margin-right: 1.5mm; }
+h3 { font-size: 12pt; font-weight: 600; color: #2b3a55; margin: 6mm 0 2mm; break-after: avoid; }
+h4 { font-size: 10.5pt; font-weight: 600; color: #2b3a55; margin: 4mm 0 1.5mm; break-after: avoid; }
+h1 + h2, h2 + h3 { margin-top: 2mm; }
+ul, ol { margin: 0 0 2.6mm; padding-left: 6mm; }
+li { margin-bottom: 1mm; }
+li > p { margin: 0 0 1mm; }
+hr { border: 0; border-top: 1px solid #dfe3e8; margin: 5mm 0; }
+table { border-collapse: collapse; width: 100%; font-size: 9pt; margin: 2mm 0 4.5mm; line-height: 1.35; }
+th, td { border: 1px solid #cfd5dd; padding: 1.4mm 2mm; vertical-align: top; text-align: left; }
+th { background: #e9edf3; font-weight: 600; color: #14213d; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+table.mid { font-size: 8.5pt; }
+table.wide { font-size: 7.6pt; }
+table.wide th, table.wide td { padding: 1mm 1.2mm; }
+table code { font-size: 92%; }
+blockquote.callout { border-left: 3px solid #f0a020; background: #fff8ec; padding: 2.5mm 3.5mm; margin: 0 0 3.5mm; break-inside: avoid; }
+blockquote.callout.tip { border-color: #2e9e6b; background: #eef8f2; }
+blockquote.callout.warning, blockquote.callout.important { border-color: #d9534f; background: #fdf0ef; }
+blockquote.callout p:last-child { margin-bottom: 0; }
+figure { margin: 3mm 0 4.5mm; break-inside: avoid; text-align: center; }
+figure img { max-width: 100%; height: auto; border: 1px solid #dfe3e8; border-radius: 2px; }
+figcaption { font-size: 8.5pt; color: #5b6573; margin-top: 1.5mm; text-align: center; line-height: 1.35; }
+figure.portrait { float: right; width: 34mm; margin: 0 0 2.5mm 5mm; }
+figure.portrait img { width: 100%; }
+figure.portrait figcaption { font-size: 8pt; }
+figure.small { width: 60%; margin-left: auto; margin-right: auto; }
+figure.half { width: 48%; }
+figure.third { width: calc((100% - 8mm) / 3); }
+figure.side { float: right; width: 46%; margin: 0 0 3mm 5mm; }
+figure.side img { width: 100%; }
+figure.side figcaption { font-size: 8pt; }
+h1.chapter, table, pre, .figrow, blockquote.callout { clear: both; }
+.float-group { display: flow-root; break-inside: avoid; }
+.figrow { display: flex; gap: 4mm; align-items: flex-start; margin: 3mm 0 4.5mm; break-inside: avoid; }
+.figrow figure { flex: 1 1 0; margin: 0; }
+.pending-box { border: 1px dashed #c9ced6; background: #f7f8fa; color: #8a94a1; padding: 14mm 6mm; font-size: 10pt; }
+figure.portrait .pending-box { padding: 16mm 2mm; font-size: 8pt; }
+table + p, pre + p { margin-top: 1mm; }
+
+/* cover */
+.cover { position: relative; width: 210mm; height: 296.5mm; overflow: hidden; background: #fff; }
+.cover .art { display: block; width: 210mm; height: 150mm; object-fit: cover; }
+.cover .art-missing { background: #14213d; }
+.cover .band { position: absolute; top: 150mm; left: 0; right: 0; height: 4mm; background: #f0a020; }
+.cover .titles { position: absolute; top: 170mm; left: 20mm; right: 20mm; }
+.cover .kicker { font-size: 11pt; letter-spacing: 0.3em; text-transform: uppercase; color: #f0a020; font-weight: 600; }
+.cover .title { font-size: 46pt; font-weight: 700; color: #14213d; margin: 2mm 0 0; line-height: 1.05; }
+.cover .sub { font-size: 18pt; color: #2b3a55; margin: 1.5mm 0 6mm; font-weight: 600; }
+.cover .blurb { font-size: 11pt; color: #3d4753; max-width: 150mm; }
+.cover .meta { position: absolute; bottom: 16mm; left: 20mm; right: 20mm; display: flex; justify-content: space-between; font-size: 10pt; color: #5b6573; border-top: 1px solid #dfe3e8; padding-top: 4mm; }
+.cover .meta .publisher { font-weight: 600; color: #14213d; }
+
+/* table of contents */
+.toc { break-before: page; }
+.toc h1 { font-size: 26pt; font-weight: 600; color: #14213d; margin: 0 0 7mm; padding-bottom: 3mm; border-bottom: 2px solid #f0a020; }
+.toc-entry a { display: flex; align-items: baseline; color: #1f2933; }
+.toc-entry.l1 { font-weight: 600; font-size: 11.5pt; margin-top: 3.2mm; }
+.toc-entry.l2 { font-size: 10pt; padding-left: 9mm; margin-top: 0.2mm; line-height: 1.38; }
+.t-num { flex: none; width: 9mm; color: #f0a020; }
+.toc-entry.l2 .t-num { width: 10mm; }
+.t-title { flex: none; max-width: 78%; }
+.t-dots { flex: 1; border-bottom: 1px dotted #9aa3ad; margin: 0 2mm; min-width: 6mm; transform: translateY(-1mm); }
+.t-page { flex: none; min-width: 8mm; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* screen */
+html { font-size: 16px; }
+body { background: #f6f7f9; color: #1f2933; }
+.cover, .toc { display: none; }
+a:hover { text-decoration: underline; }
+.topbar { background: #14213d; color: #fff; border-bottom: 4px solid #f0a020; }
+.topbar .in { max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+.topbar .brand { font-weight: 700; font-size: 1.15rem; color: #fff; }
+.topbar .brand span { color: #f0a020; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; margin-left: 10px; }
+.topbar nav a { color: #d7deea; margin-right: 16px; font-size: 0.95rem; }
+.topbar nav a.on { color: #fff; font-weight: 600; border-bottom: 2px solid #f0a020; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; display: flex; gap: 40px; align-items: flex-start; }
+.side { flex: 0 0 280px; position: sticky; top: 0; max-height: 100vh; overflow-y: auto; padding: 24px 0 24px; font-size: 0.86rem; line-height: 1.4; }
+.side .pdf { display: inline-block; background: #f0a020; color: #14213d; font-weight: 600; padding: 6px 12px; border-radius: 4px; margin-bottom: 16px; }
+.side .pdf:hover { background: #ffb43a; text-decoration: none; }
+.side a { color: #2b3a55; display: block; padding: 3px 0; }
+.side .c { font-weight: 600; margin-top: 10px; color: #14213d; }
+.side .s { padding-left: 16px; color: #4b5666; }
+.side .n { color: #f0a020; margin-right: 6px; }
+main { flex: 1 1 0; min-width: 0; background: #fff; padding: 12px 40px 48px; margin: 24px 0 48px; border: 1px solid #e3e7ec; border-radius: 6px; }
+main p, main li { font-size: 1rem; line-height: 1.55; }
+main h1.chapter { font-size: 2rem; margin: 40px 0 20px; }
+main h2 { font-size: 1.45rem; margin: 36px 0 12px; }
+main h3 { font-size: 1.15rem; margin: 26px 0 8px; }
+main h4 { font-size: 1rem; }
+main table, main table.mid, main table.wide { font-size: 0.88rem; }
+main table.wide th, main table.wide td { padding: 4px 8px; }
+main pre { font-size: 0.86rem; white-space: pre; overflow-x: auto; }
+main code { font-size: 0.92em; }
+main figcaption { font-size: 0.86rem; }
+main figure.portrait { width: 150px; }
+main .figrow { gap: 16px; }
+.foot { max-width: 1240px; margin: 0 auto; padding: 0 24px 40px; color: #5b6573; font-size: 0.86rem; }
+@media (max-width: 900px) {
+  .wrap { flex-direction: column; gap: 0; }
+  .side { position: static; max-height: none; flex: none; width: 100%; padding-bottom: 0; }
+  .side details summary { cursor: pointer; font-weight: 600; color: #14213d; }
+  main { flex: none; width: 100%; box-sizing: border-box; padding: 8px 18px 32px; margin-top: 12px; }
+  main figure.side, main figure.portrait { float: none; width: 100%; margin: 12px 0; }
+  html, body { overflow-x: hidden; }
+  .side { box-sizing: border-box; }
+  main table { display: block; overflow-x: auto; }
+}
+@media (min-width: 901px) { .side details summary { display: none; } .side details { display: contents; } }
+</style></head><body>
+<header class="topbar"><div class="in"><a class="brand" href="../">RPG Enemies<span>Utility AI Included</span></a><nav><a href="../">Home</a><a href="../manual/">Manual</a><a href="../customization/" class=on>Customization</a><a href="../extending/">Code Extending</a></nav></div></header>
+<div class="wrap"><aside class="side"><a class="pdf" href="../RPGEnemies_Customization.pdf">Download the PDF</a><details><summary>Contents</summary><a class="c" href="#ch-start-here"><span class="n">1</span>Start here</a><a class="s" href="#ch-start-here-what-you-can-change-without-code"><span class="n">1.1</span>What you can change without code</a><a class="s" href="#ch-start-here-the-golden-rule-work-on-a-prefab-variant"><span class="n">1.2</span>The golden rule: work on a Prefab Variant</a><a class="s" href="#ch-start-here-where-things-live-on-an-enemy"><span class="n">1.3</span>Where things live on an enemy</a><a class="c" href="#ch-your-character"><span class="n">2</span>Your character</a><a class="s" href="#ch-your-character-swap-the-model"><span class="n">2.1</span>Swap the model</a><a class="s" href="#ch-your-character-what-moves-across"><span class="n">2.2</span>What moves across</a><a class="s" href="#ch-your-character-check-the-result"><span class="n">2.3</span>Check the result</a><a class="s" href="#ch-your-character-bring-your-own-animations-too"><span class="n">2.4</span>Bring your own animations too</a><a class="s" href="#ch-your-character-recolour-a-character"><span class="n">2.5</span>Recolour a character</a><a class="s" href="#ch-your-character-generic-rigs"><span class="n">2.6</span>Generic rigs</a><a class="c" href="#ch-weapons"><span class="n">3</span>Weapons</a><a class="s" href="#ch-weapons-select-the-weapon"><span class="n">3.1</span>Select the weapon</a><a class="s" href="#ch-weapons-the-grip-and-size-tools"><span class="n">3.2</span>The Grip and Size tools</a><a class="s" href="#ch-weapons-check-the-grip-through-an-attack"><span class="n">3.3</span>Check the grip through an attack</a><a class="s" href="#ch-weapons-fix-the-grip"><span class="n">3.4</span>Fix the grip</a><a class="s" href="#ch-weapons-make-it-bigger-or-smaller"><span class="n">3.5</span>Make it bigger or smaller</a><a class="s" href="#ch-weapons-give-an-enemy-another-weapon-replace-weapon"><span class="n">3.6</span>Give an enemy another weapon (Replace Weapon)</a><a class="s" href="#ch-weapons-make-a-weapon-from-your-own-model"><span class="n">3.7</span>Make a weapon from your own model</a><a class="s" href="#ch-weapons-weapons-lying-around-to-pick-up"><span class="n">3.8</span>Weapons lying around to pick up</a><a class="c" href="#ch-animations"><span class="n">4</span>Animations</a><a class="s" href="#ch-animations-open-the-clip-mapping"><span class="n">4.1</span>Open the Clip Mapping</a><a class="s" href="#ch-animations-make-unique-first"><span class="n">4.2</span>Make Unique first</a><a class="s" href="#ch-animations-replace-one-clip"><span class="n">4.3</span>Replace one clip</a><a class="s" href="#ch-animations-replace-a-whole-set-from-a-folder"><span class="n">4.4</span>Replace a whole set from a folder</a><a class="s" href="#ch-animations-hit-frames-stride-speeds-and-grounding"><span class="n">4.5</span>Hit frames, stride speeds and grounding</a><a class="s" href="#ch-animations-add-a-new-move-with-custom1-to-custom6"><span class="n">4.6</span>Add a new move with Custom1 to Custom6</a><a class="s" href="#ch-animations-add-a-state-of-your-own-add-state"><span class="n">4.7</span>Add a state of your own (Add State…)</a><a class="s" href="#ch-animations-guard-without-a-guard-clip"><span class="n">4.8</span>Guard without a guard clip</a><a class="c" href="#ch-attacks"><span class="n">5</span>Attacks</a><a class="s" href="#ch-attacks-tune-an-attack"><span class="n">5.1</span>Tune an attack</a><a class="s" href="#ch-attacks-make-a-new-attack"><span class="n">5.2</span>Make a new attack</a><a class="s" href="#ch-attacks-give-it-an-animation"><span class="n">5.3</span>Give it an animation</a><a class="s" href="#ch-attacks-make-it-read-well"><span class="n">5.4</span>Make it read well</a><a class="c" href="#ch-look-and-sound"><span class="n">6</span>Look and sound</a><a class="s" href="#ch-look-and-sound-where-a-sound-or-effect-belongs"><span class="n">6.1</span>Where a sound or effect belongs</a><a class="s" href="#ch-look-and-sound-give-an-enemy-its-own-sounds"><span class="n">6.2</span>Give an enemy its own sounds</a><a class="s" href="#ch-look-and-sound-give-an-attack-its-own-sound-and-effect"><span class="n">6.3</span>Give an attack its own sound and effect</a><a class="s" href="#ch-look-and-sound-flashes-and-warning-colours"><span class="n">6.4</span>Flashes and warning colours</a><a class="s" href="#ch-look-and-sound-the-awareness-icons"><span class="n">6.5</span>The awareness icons</a><a class="c" href="#ch-behaviour-and-difficulty"><span class="n">7</span>Behaviour and difficulty</a><a class="s" href="#ch-behaviour-and-difficulty-how-an-enemy-decides"><span class="n">7.1</span>How an enemy decides</a><a class="s" href="#ch-behaviour-and-difficulty-watch-the-scores-f1"><span class="n">7.2</span>Watch the scores (F1)</a><a class="s" href="#ch-behaviour-and-difficulty-make-it-do-something-more-or-less"><span class="n">7.3</span>Make it do something more, or less</a><a class="s" href="#ch-behaviour-and-difficulty-tune-a-consideration"><span class="n">7.4</span>Tune a consideration</a><a class="s" href="#ch-behaviour-and-difficulty-stats-health-senses-and-speed"><span class="n">7.5</span>Stats: health, senses and speed</a><a class="s" href="#ch-behaviour-and-difficulty-difficulty-profiles"><span class="n">7.6</span>Difficulty profiles</a><a class="c" href="#ch-mix-and-match-behaviours"><span class="n">8</span>Mix and match behaviours</a><a class="s" href="#ch-mix-and-match-behaviours-how-mixing-works"><span class="n">8.1</span>How mixing works</a><a class="s" href="#ch-mix-and-match-behaviours-browse-the-behaviour-library"><span class="n">8.2</span>Browse the Behaviour Library</a><a class="s" href="#ch-mix-and-match-behaviours-add-a-behaviour-to-your-enemy"><span class="n">8.3</span>Add a behaviour to your enemy</a><a class="s" href="#ch-mix-and-match-behaviours-make-it-yours"><span class="n">8.4</span>Make it yours</a><a class="s" href="#ch-mix-and-match-behaviours-start-a-new-enemy-with-the-wizard"><span class="n">8.5</span>Start a new enemy with the wizard</a><a class="s" href="#ch-mix-and-match-behaviours-the-starter-template"><span class="n">8.6</span>The Starter template</a><a class="s" href="#ch-mix-and-match-behaviours-four-recipes"><span class="n">8.7</span>Four recipes</a><a class="s" href="#ch-mix-and-match-behaviours-common-gotchas"><span class="n">8.8</span>Common gotchas</a><a class="s" href="#ch-mix-and-match-behaviours-design-your-own-a-worksheet"><span class="n">8.9</span>Design your own: a worksheet</a><a class="c" href="#ch-checklist"><span class="n">9</span>Checklist</a><a class="s" href="#ch-checklist-make-an-enemy-your-own-in-15-minutes"><span class="n">9.1</span>Make an enemy your own in 15 minutes</a><a class="s" href="#ch-checklist-troubleshooting"><span class="n">9.2</span>Troubleshooting</a><a class="s" href="#ch-checklist-questions"><span class="n">9.3</span>Questions</a><a class="c" href="#ch-behaviour-catalog"><span class="n">10</span>Behaviour catalog</a><a class="s" href="#ch-behaviour-catalog-idle-and-patrol"><span class="n">10.1</span>Idle and patrol</a><a class="s" href="#ch-behaviour-catalog-awareness-and-alarms"><span class="n">10.2</span>Awareness and alarms</a><a class="s" href="#ch-behaviour-catalog-chase-and-positioning"><span class="n">10.3</span>Chase and positioning</a><a class="s" href="#ch-behaviour-catalog-melee-attacks"><span class="n">10.4</span>Melee attacks</a><a class="s" href="#ch-behaviour-catalog-ranged-and-area-attacks"><span class="n">10.5</span>Ranged and area attacks</a><a class="s" href="#ch-behaviour-catalog-defence"><span class="n">10.6</span>Defence</a><a class="s" href="#ch-behaviour-catalog-evasion-and-cover"><span class="n">10.7</span>Evasion and cover</a><a class="s" href="#ch-behaviour-catalog-group-tactics"><span class="n">10.8</span>Group tactics</a><a class="s" href="#ch-behaviour-catalog-support"><span class="n">10.9</span>Support</a><a class="s" href="#ch-behaviour-catalog-weapons-and-props"><span class="n">10.10</span>Weapons and props</a><a class="s" href="#ch-behaviour-catalog-personality"><span class="n">10.11</span>Personality</a><a class="s" href="#ch-behaviour-catalog-special"><span class="n">10.12</span>Special</a><a class="s" href="#ch-behaviour-catalog-starter-template-and-recipes"><span class="n">10.13</span>Starter template and recipes</a></details></aside><main><section class="chapter"><h1 class="chapter" id="ch-start-here"><span class="hnum">1</span> Start here</h1>
+<p>This guide shows how to make the pack's enemies your own without writing code. It covers your characters, their weapons
+and animations, their attacks, sounds and effects, and how they behave. Each chapter is a set of short tasks with numbered
+steps, and stands alone. The Manual (<code>RPGEnemies_Manual.pdf</code>) explains how the systems work; this guide shows which
+buttons to press. Short on time? <a href="#ch-checklist">Checklist</a> makes an enemy your own in fifteen minutes.</p>
+<p>The steps use the Melee Soldier and a variant of it called <strong>My Soldier</strong>; they work the same on every enemy. To try an
+enemy in your own scene, you need a NavMesh and a player with <strong>Simple Combat Target</strong>. The Manual's Quick Start chapter
+sets that up in five minutes.</p>
+<h2 id="ch-start-here-what-you-can-change-without-code"><span class="hnum">1.1</span> What you can change without code</h2>
+<table>
+<thead>
+<tr>
+<th>You want to change</th>
+<th>Where</th>
+<th>Chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The character model</td>
+<td><strong>Enemy ▸ Swap Model…</strong></td>
+<td><a href="#ch-your-character">Your character</a></td>
+</tr>
+<tr>
+<td>Its colours</td>
+<td>A <strong>Character Color Variant</strong> asset</td>
+<td><a href="#ch-your-character">Your character</a></td>
+</tr>
+<tr>
+<td>How the weapon sits in the hand, and its size</td>
+<td>The weapon's <strong>Weapon Item ▸ Grip and Size</strong></td>
+<td><a href="#ch-weapons">Weapons</a></td>
+</tr>
+<tr>
+<td>Which weapon it holds</td>
+<td><strong>Enemy ▸ Replace Weapon</strong></td>
+<td><a href="#ch-weapons">Weapons</a></td>
+</tr>
+<tr>
+<td>One animation, or all of them</td>
+<td><strong>Enemy Animator ▸ Clip Mapping</strong></td>
+<td><a href="#ch-animations">Animations</a></td>
+</tr>
+<tr>
+<td>A new move's animation</td>
+<td>A spare slot, <strong>Custom1</strong> to <strong>Custom6</strong>, or a state of your own (<strong>Clip Mapping ▸ Add State…</strong>)</td>
+<td><a href="#ch-animations">Animations</a></td>
+</tr>
+<tr>
+<td>An attack's range, timing, damage and warning colour</td>
+<td>Its <strong>Attack Data</strong> asset, after <strong>Make Unique</strong> gives the attack its own</td>
+<td><a href="#ch-attacks">Attacks</a></td>
+</tr>
+<tr>
+<td>A new attack</td>
+<td>A new <strong>Attack Data</strong> and <strong>Attack Action</strong></td>
+<td><a href="#ch-attacks">Attacks</a></td>
+</tr>
+<tr>
+<td>Sounds, particles, camera shake and flashes</td>
+<td><strong>Feedback Emitter</strong>, <strong>Feedback Profile</strong> and the cues on each attack</td>
+<td><a href="#ch-look-and-sound">Look and sound</a></td>
+</tr>
+<tr>
+<td>The "?" and "!" icons and the guard icon</td>
+<td><strong>Awareness Indicator</strong></td>
+<td><a href="#ch-look-and-sound">Look and sound</a></td>
+</tr>
+<tr>
+<td>What it chooses to do, and when</td>
+<td>Each action's <strong>Weight</strong>, <strong>Considerations</strong> and <strong>Cooldown</strong></td>
+<td><a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a></td>
+</tr>
+<tr>
+<td>Which behaviours it has: borrow any behaviour from the other enemies</td>
+<td><strong>Enemy ▸ Add Behaviour…</strong> (the <strong>Behaviour Library</strong>)</td>
+<td><a href="#ch-mix-and-match-behaviours">Mix and match behaviours</a></td>
+</tr>
+<tr>
+<td>A whole new enemy from a template, a recipe or an archetype</td>
+<td><strong>Tools ▸ TinnyStudios ▸ RPG Enemies ▸ New Enemy…</strong></td>
+<td><a href="#ch-mix-and-match-behaviours">Mix and match behaviours</a></td>
+</tr>
+<tr>
+<td>Health, senses and speed</td>
+<td><strong>Health</strong>, <strong>Enemy Senses</strong> and the actions' speeds</td>
+<td><a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a></td>
+</tr>
+<tr>
+<td>How hard it is</td>
+<td>A <strong>Difficulty Profile</strong></td>
+<td><a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a></td>
+</tr>
+</tbody>
+</table>
+<p>A few things still need code, and the Code Extending guide (<code>RPGEnemies_CodeExtending.pdf</code>) shows how:</p>
+<ul>
+<li>a question the AI cannot ask yet (a new kind of consideration);</li>
+<li>a new kind of action or attack, such as a shield bash or a beam. A script template writes a working one, and the
+  guide's "Your first custom action" chapter takes one from the script to Play mode without touching the pack's files;</li>
+<li>a different kind of awareness icon, such as your own sprites or a marker in your game's UI.</li>
+</ul>
+<p>New animation states need no code: add as many as you like, for every character, with <strong>Add State…</strong>
+(<a href="#ch-animations">Animations</a>).</p>
+<h2 id="ch-start-here-the-golden-rule-work-on-a-prefab-variant"><span class="hnum">1.2</span> The golden rule: work on a Prefab Variant</h2>
+<p>A pack update replaces the pack's own files. Anything you change inside <code>Assets/TinnyStudios/RPGEnemies</code> is lost when you
+update. So never edit the pack's prefabs: make a Prefab Variant in your own folder and change that. A variant keeps your
+changes and still gets the pack's fixes.</p>
+<ol>
+<li>Make a folder for your enemies outside the pack, for example <code>Assets/MyGame/Enemies</code>.</li>
+<li>In the Project window, open <code>Assets/TinnyStudios/RPGEnemies/Prefabs/Enemies</code>.</li>
+<li>Right-click the enemy to start from, for example <strong>Melee Soldier</strong>, and choose <strong>Create ▸ Prefab Variant</strong>.</li>
+<li>Drag the new variant into your folder and rename it, for example <strong>My Soldier</strong>.</li>
+<li>Double-click it to open it in Prefab Mode, and make your changes there.</li>
+<li>Leave Prefab Mode with the arrow at the top left of the Hierarchy. Save when Unity asks, or tick <strong>Auto Save</strong> at the top
+   right of the Scene view.</li>
+</ol>
+<p>The same rule holds for data. Attack Data, Feedback Profile, Difficulty Profile and Consideration assets are shared by every
+enemy that uses them. Before you change one, give your enemy its own with <strong>Make Unique</strong>: under an attack's <strong>Attack</strong>
+field, next to a consideration, or next to the <strong>Feedback Emitter</strong>'s <strong>Profile</strong>. It saves the copy next to your prefab
+and points your enemy at it. A Difficulty Profile you copy yourself: press <strong>Ctrl+D</strong>, move the copy into your folder and
+use it.</p>
+<p>The tools keep to this rule. One that would change one of the pack's own prefabs asks first, "Change the pack's
+prefab?": <strong>Create Variant</strong>, the default, saves a Prefab Variant of it in your folder, named like "My Melee Soldier", and
+makes the change there. <strong>Change the pack's prefab</strong> does it anyway, until the next update. Your own prefabs and variants,
+and enemies in a scene, are changed without the question.</p>
+<blockquote class="callout note">
+<p><strong>Note:</strong> Swap Model's <strong>Create Variant</strong> button makes the variant for you, with your model in it
+(<a href="#ch-your-character">Your character</a>). A variant plays its original's animation clips until you press <strong>Make Unique</strong>
+(<a href="#ch-animations">Animations</a>).</p>
+</blockquote>
+<h2 id="ch-start-here-where-things-live-on-an-enemy"><span class="hnum">1.3</span> Where things live on an enemy</h2>
+<figure class="figure"><img src="../images/custom-map.png" alt="The Hierarchy of My Soldier, a variant of the Melee Soldier, in Prefab Mode: the root, the model under Visual, the Awareness Indicator and the Actions"><figcaption>The Hierarchy of My Soldier, a variant of the Melee Soldier, in Prefab Mode: the root, the model under Visual, the Awareness Indicator and the Actions</figcaption></figure>
+<p>The root holds the components you tune most: <strong>Enemy</strong> (weapon, reactions, difficulty), <strong>Enemy Animator</strong> (Swap Model,
+Clip Mapping), <strong>Feedback Emitter</strong> (sounds and effects), <strong>Health</strong> and <strong>Enemy Senses</strong>. The data the enemies share is in
+the pack's <code>Data</code> folder (<code>Attacks</code>, <code>Considerations</code>, <code>Difficulty</code>), and the sample sounds, effects and feedback profiles
+are in <code>Feedback</code> (<code>Audio</code>, <code>Effects</code>, <code>Profiles</code>).</p>
+</section><section class="chapter"><h1 class="chapter" id="ch-your-character"><span class="hnum">2</span> Your character</h1>
+<p>Put your own character on an enemy and keep everything else: its AI, attacks, weapon and guard. One tool does it:
+<strong>Swap Model</strong>. It opens from the top of the <strong>Enemy</strong> component, and it is also the first section of the <strong>Enemy
+Animator</strong>. This chapter also shows how to recolour a character.</p>
+<p>Before you start:</p>
+<ul>
+<li>A <strong>Humanoid</strong> rig works straight away: it reuses the enemy's animations. Check it in your model's import settings, on
+  the <strong>Rig</strong> tab: <strong>Animation Type</strong> should be <strong>Humanoid</strong>.</li>
+<li>A <strong>Generic</strong> rig works too, but it needs its own animations. See "Generic rigs" at the end of this chapter.</li>
+<li>Know your character's height in metres, head to toe. Or leave the height at 0 to keep the old model's height.</li>
+</ul>
+<h2 id="ch-your-character-swap-the-model"><span class="hnum">2.1</span> Swap the model</h2>
+<figure class="figure small"><img src="../images/custom-swap-model.png" alt="Swap Model… at the top of the Enemy component (2) opens the Swap Model window, filled in here for the pack&#x27;s Melee Soldier: a new model (3), Keep Current animations (4), a height of 1.9 m (5), the Feedback Profile left empty (6), and Create Variant (7)"><figcaption>Swap Model… at the top of the Enemy component (2) opens the Swap Model window, filled in here for the pack&#x27;s Melee Soldier: a new model (3), Keep Current animations (4), a height of 1.9 m (5), the Feedback Profile left empty (6), and Create Variant (7)</figcaption></figure>
+<ol>
+<li>In the Project window, select the pack's enemy prefab, for example <code>Prefabs/Enemies/Melee Soldier</code>.</li>
+<li>In the Inspector, press <strong>Swap Model…</strong> at the top of the <strong>Enemy</strong> component. The <strong>Swap Model</strong> window opens, set
+   to that enemy.</li>
+<li><strong>New Model</strong>: drag in your model, the FBX file or a prefab of it.</li>
+<li><strong>Animations</strong>: leave it on <strong>Keep Current</strong>.</li>
+<li><strong>Height</strong>: your character's height in metres. 0 keeps the old height.</li>
+<li><strong>Feedback Profile</strong> (optional): your character's own voice and footsteps (<a href="#ch-look-and-sound">Look and sound</a>).</li>
+<li>Press <strong>Create Variant</strong>. The save dialog opens in your own folder: the last one you saved in with the pack's tools,
+   or <code>Assets</code>. Save the variant there.</li>
+</ol>
+<p>You now have a Prefab Variant with your model in it. The pack's prefab is unchanged, and your variant keeps getting the
+pack's fixes. The window follows your selection. What you picked is kept for each enemy, and cleared after a swap.</p>
+<p>Already made a variant? Select it in the Project window and press <strong>Replace In Prefab</strong>: it changes the variant in place,
+and cannot be undone. Or open it in Prefab Mode, where the section shows a single <strong>Swap Model</strong> button, then save. That
+swap is one step: <strong>Ctrl+Z</strong> puts the old model back.</p>
+<p>Selected an enemy in a scene? For an instance of a prefab, the section shows <strong>Select Prefab</strong> and <strong>Open Prefab</strong>
+instead. Swap the model in a prefab, not in one scene object. For an instance of one of the pack's prefabs, press
+<strong>Select Prefab</strong> and use <strong>Create Variant</strong>.</p>
+<blockquote class="callout warning">
+<p><strong>Warning:</strong> Don't swap the model in the pack's own prefab: the next pack update puts the old model back. On one of the
+pack's prefabs, <strong>Replace In Prefab</strong>, and <strong>Swap Model</strong> in its Prefab Mode, ask first, "Change the pack's prefab?".
+<strong>Create Variant</strong>, the default, saves a Prefab Variant of it in your folder and swaps the model there.</p>
+</blockquote>
+<h2 id="ch-your-character-what-moves-across"><span class="hnum">2.2</span> What moves across</h2>
+<ul>
+<li><strong>The weapon.</strong> A grip socket is built in the same hand of your model, and the weapon goes into it with its own grip.</li>
+<li><strong>Props on bones</strong>, like a shield strapped to a forearm, move to the same bone on your model.</li>
+<li><strong>A Humanoid Guard Pose</strong> on the old model is copied to yours (<a href="#ch-animations">Animations</a>).</li>
+<li><strong>Hit frames</strong> are detected again when the animations change.</li>
+<li><strong>Effects</strong> are sized to your character: the Feedback Emitter's <strong>Visual Scale</strong> changes with the height.</li>
+<li><strong>References</strong> that pointed into the old model are pointed at yours, and the old model is deleted.</li>
+<li><strong>The body's size</strong>, when you give another <strong>Height</strong>. Everything that depends on it is resized by the same ratio,
+  new height over old: the colliders, the <strong>Nav Mesh Agent</strong>, <strong>Enemy Senses ▸ Eye Height</strong>, the <strong>Awareness
+  Indicator</strong>, the muzzle and hold points, the footstep stride, and, with the same animations, the walk and run clip
+  speeds.</li>
+</ul>
+<p>A prop with no matching bone on your model is kept on the character, switched off. The Console lists everything that was
+done, including what was resized.</p>
+<blockquote class="callout note">
+<p><strong>Note:</strong> A new height leaves attack reach alone. Attack Data are shared by many enemies, so a much bigger or smaller
+character may need its own copies (<strong>Make Unique</strong> on each attack) with a longer or shorter <strong>Max Range</strong> and <strong>Hit
+Reach</strong>, or a weapon with another <strong>Reach Bonus</strong> (<a href="#ch-attacks">Attacks</a>, <a href="#ch-weapons">Weapons</a>).</p>
+</blockquote>
+<figure class="figure small"><img src="../images/model-swap.jpg" alt="The same Melee Soldier AI on its own model (left) and on a swapped-in Humanoid rig (right): its actions, attacks, weapon and guard carried over"><figcaption>The same Melee Soldier AI on its own model (left) and on a swapped-in Humanoid rig (right): its actions, attacks, weapon and guard carried over</figcaption></figure>
+<h2 id="ch-your-character-check-the-result"><span class="hnum">2.3</span> Check the result</h2>
+<ol>
+<li>Double-click your new variant to open it in Prefab Mode.</li>
+<li>Select the weapon and check its grip through an attack (<a href="#ch-weapons">Weapons</a>).</li>
+<li>Put the variant in a test scene with a NavMesh and your player, and press Play.</li>
+<li>Feet sliding or floating? Press <strong>Measure Stride Speeds</strong> on the Enemy Animator (<a href="#ch-animations">Animations</a>).</li>
+<li>Check that it reaches you when it attacks. If not, tune its attacks' reach (<a href="#ch-attacks">Attacks</a>).</li>
+</ol>
+<h2 id="ch-your-character-bring-your-own-animations-too"><span class="hnum">2.4</span> Bring your own animations too</h2>
+<p>Set <strong>Animations</strong> before you press Create Variant:</p>
+<ul>
+<li><strong>Override Controller</strong>: an Animator Override Controller of the pack's <code>EnemyBase</code> controller, with your clips in it.</li>
+<li><strong>Clips Folder</strong>: a folder of clips named <code>Name_Anim_State</code>, for example <code>Orc_Anim_Idle</code> and <code>Orc_Anim_Slash1</code>. The tool
+  builds the Override Controller for you (<a href="#ch-animations">Animations</a>).</li>
+</ul>
+<p>Or keep the current clips for now, and replace them one at a time later in the Clip Mapping (<a href="#ch-animations">Animations</a>).</p>
+<h2 id="ch-your-character-recolour-a-character"><span class="hnum">2.5</span> Recolour a character</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-color-variant.png" alt="Marksman Hero, the colour variant that turns the Archer&#x27;s model into the demo&#x27;s hero: three rules that move the green hood to blue, the red wraps to gold and the eyes to cyan"><figcaption>Marksman Hero, the colour variant that turns the Archer&#x27;s model into the demo&#x27;s hero: three rules that move the green hood to blue, the red wraps to gold and the eyes to cyan</figcaption></figure>
+<p>A <strong>Character Color Variant</strong> makes a recoloured copy of a character's texture and material. Each rule moves one band of
+hues to a new hue, so skin can stay as it is while clothes change. The demo's hero is made this way from the Archer's model:
+open <code>Demo/Materials/Marksman Hero</code> to see it.</p>
+<ol>
+<li>In your folder, right-click and choose <strong>Create ▸ TinnyStudios ▸ RPG Enemies ▸ Character Color Variant</strong>.</li>
+<li><strong>Source Material</strong>: the material on your character's mesh.</li>
+<li>Add a <strong>Rule</strong> for each colour to change. <strong>From Hue Min</strong> and <strong>From Hue Max</strong> pick the band (0 to 1 around the colour
+   wheel). <strong>To Hue</strong> is the new hue.</li>
+<li>Leave skin out of the rules to keep it unchanged.</li>
+<li>Press <strong>Generate</strong>. A new texture and material are saved next to the asset.</li>
+<li>Open your variant, select the model's mesh (the object with the <strong>Skinned Mesh Renderer</strong>), and put the new material
+   in its <strong>Materials</strong> list.</li>
+</ol></div>
+<blockquote class="callout tip">
+<p><strong>Tip:</strong> For a quick "elite" look without new art, give your variant a Difficulty Profile with a <strong>Tint</strong>: the pack's
+Hard and Elite have one, or tint your own copy of a profile (<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>).</p>
+</blockquote>
+<h2 id="ch-your-character-generic-rigs"><span class="hnum">2.6</span> Generic rigs</h2>
+<ul>
+<li><strong>Keep Current</strong> only works for Humanoid rigs. Choose <strong>Override Controller</strong> or <strong>Clips Folder</strong> with your own clips.</li>
+<li><strong>Weapons</strong> are held by Humanoid hands. On a Generic model, a weapon with no matching bone is kept, switched off. To hold
+  one, add an empty child to the hand bone. Point its blue axis along the blade and its green axis up, and set it as
+  <strong>Enemy ▸ Weapon Socket</strong>. Then use <strong>Replace Weapon</strong> (<a href="#ch-weapons">Weapons</a>).</li>
+<li><strong>The guard pose</strong> needs a Humanoid, so it is removed. The guard still blocks.</li>
+<li><strong>Measure Stride Speeds</strong> and <strong>Detect Hit Frames</strong> only measure Humanoids. On a Generic character, type the
+  <strong>Locomotion Clip Speeds</strong> in yourself. Add <strong>Hit Markers</strong> by hand too: a state, and the moment it hits, from 0 to 1
+  through the clip.</li>
+</ul>
+</section><section class="chapter"><h1 class="chapter" id="ch-weapons"><span class="hnum">3</span> Weapons</h1>
+<p>Every weapon is a <strong>Weapon Item</strong>. Where the hand holds it is stored on the weapon itself, in <strong>Held Position</strong> and
+<strong>Held Rotation</strong>, and every pick-up puts it there. The <strong>Grip and Size</strong> tools edit those two values for you, and move the
+weapon while you work. This chapter checks a grip through an attack, fixes it, resizes the weapon, gives an enemy another
+weapon, and makes a weapon from your own model.</p>
+<h2 id="ch-weapons-select-the-weapon"><span class="hnum">3.1</span> Select the weapon</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-weapon-path.png" alt="The weapon in the Hierarchy: inside the model&#x27;s right hand, in WeaponSocket"><figcaption>The weapon in the Hierarchy: inside the model&#x27;s right hand, in WeaponSocket</figcaption></figure>
+<ol>
+<li>Open your variant in Prefab Mode (double-click it in the Project window).</li>
+<li>Select the root, and in the <strong>Enemy</strong> component open <strong>Replace Weapon</strong>. Press <strong>Select Weapon</strong>.</li>
+<li>Or find it in the Hierarchy: it is inside the model's right hand, under <strong>WeaponSocket</strong>.</li>
+</ol>
+<p>The weapon's inspector now shows <strong>Grip and Size</strong>. The socket is the fist: its blue axis (+Z) runs along the blade and its
+green axis (+Y) points up. Every weapon is set up the same way, so a weapon that fits one hand fits every hand.</p></div>
+<blockquote class="callout note">
+<p><strong>Note:</strong> To see the weapon in a hand, open the character in Prefab Mode or in a scene. On a prefab selected in the
+Project window, Select Weapon is greyed out.</p>
+</blockquote>
+<h2 id="ch-weapons-the-grip-and-size-tools"><span class="hnum">3.2</span> The Grip and Size tools</h2>
+<figure class="figure small"><img src="../images/custom-weapon-inspector.png" alt="The Weapon Item inspector: Held Position and Held Rotation, then Grip and Size with its tools, numbered as in the list below"><figcaption>The Weapon Item inspector: Held Position and Held Rotation, then Grip and Size with its tools, numbered as in the list below</figcaption></figure>
+<ol>
+<li><strong>Edit Grip</strong>: handles at the fist in the Scene view, to move and turn the weapon in the hand.</li>
+<li><strong>Flip</strong>: turns the weapon end for end, for a weapon held by its blade.</li>
+<li><strong>Grip Along Length</strong>: slides the weapon through the fist, from the back end (0) to the tip (1).</li>
+<li><strong>Grip From Mesh</strong>: works the grip out from the mesh again.</li>
+<li><strong>Length (m)</strong>: resizes the weapon around the fist.</li>
+<li><strong>Adjust Reach</strong>: when the length changes, the enemy's reach changes too.</li>
+<li>The status line: how far the tip reaches in front of the fist, and the weapon's <strong>Reach Bonus</strong>.</li>
+<li><strong>Use Current Transform</strong>: keeps a weapon you moved by hand. Greyed out while there is nothing to keep.</li>
+<li><strong>Check Through An Animation</strong>: pick a <strong>State</strong> and press <strong>Pose</strong> to pose the character.</li>
+<li>The time line: <strong>Loop</strong> (it reads <strong>Pause</strong> while the clip plays), the time in seconds, <strong>Hit</strong> and <strong>Stop</strong>.</li>
+</ol>
+<h2 id="ch-weapons-check-the-grip-through-an-attack"><span class="hnum">3.3</span> Check the grip through an attack</h2>
+<p>A grip that looks right at rest can clip through the arm in the middle of a swing. Pose the character in its real attack
+clip and look.</p>
+<ol>
+<li>Open <strong>Check Through An Animation</strong>, at the bottom of Grip and Size.</li>
+<li><strong>State</strong>: pick an attack. The character's own attacks are listed first, for example <strong>Slash1</strong>.</li>
+<li>Press <strong>Pose</strong> next to the state. The character takes the pose in the Scene view, at the moment the attack hits.</li>
+<li>Drag the time slider to scrub through the swing. Or press <strong>Loop</strong> to play the clip over and over, and <strong>Pause</strong> to
+   hold a frame.</li>
+<li>Press <strong>Hit</strong> to jump back to the hit, and <strong>Stop</strong> when you are done.</li>
+</ol>
+<figure class="figure"><img src="../images/custom-check-animation.jpg" alt="Check Through An Animation on My Soldier&#x27;s Slash1: posed at the wind-up (0.52 s), the hit (0.73 s) and the follow-through (1.59 s), with the fist and the tip marked, and the controls under each: State, Pose, Loop, the time, Hit and Stop"><figcaption>Check Through An Animation on My Soldier&#x27;s Slash1: posed at the wind-up (0.52 s), the hit (0.73 s) and the follow-through (1.59 s), with the fist and the tip marked, and the controls under each: State, Pose, Loop, the time, Hit and Stop</figcaption></figure>
+<p>Nothing is changed or saved: the pose goes when you press Stop, select something else, save or press Play.</p>
+<h2 id="ch-weapons-fix-the-grip"><span class="hnum">3.4</span> Fix the grip</h2>
+<h3 id="ch-weapons-with-handles-edit-grip">With handles (Edit Grip)</h3>
+<ol>
+<li>Press <strong>Edit Grip</strong>. Handles appear at the fist in the Scene view. The same tool is in the Scene view's Tools
+   overlay.</li>
+<li>Read the markers. The blue arrow, "blade +Z", runs along the blade. The green arrow, "up +Y", points up. A dotted line
+   runs out to the tip and shows its distance.</li>
+<li>Drag a ring to turn the weapon around the fist.</li>
+<li>Drag an arrow to slide the weapon through the hand. The blue arrow slides it along the blade.</li>
+<li>Check it through the attack again. Press <strong>Edit Grip</strong> once more to put the tool away.</li>
+</ol>
+<figure class="figure small"><img src="../images/custom-edit-grip.jpg" alt="Edit Grip on the Melee Soldier&#x27;s cleaver: the handle at the fist, with the blade and up axes, and the tip 0.66 m away"><figcaption>Edit Grip on the Melee Soldier&#x27;s cleaver: the handle at the fist, with the blade and up axes, and the tip 0.66 m away</figcaption></figure>
+<p>Every change can be undone with <strong>Ctrl+Z</strong>. For a fine slide along the blade, drag the <strong>Grip Along Length</strong> slider
+instead: swords and clubs sit near 0.12, staves near the middle.</p>
+<h3 id="ch-weapons-held-by-the-blade-flip-it">Held by the blade? Flip it</h3>
+<p>Press <strong>Flip</strong>. The weapon turns end for end. The fist stays the same distance from the back end, and the other end sits
+in the hand where this one did, so a grip you slid across the handle with Edit Grip is kept.</p>
+<figure class="figure"><img src="../images/custom-flip.jpg" alt="Flip: a cleaver held by its blade (left) and the same cleaver after one press of Flip (right)"><figcaption>Flip: a cleaver held by its blade (left) and the same cleaver after one press of Flip (right)</figcaption></figure>
+<h3 id="ch-weapons-start-again-from-the-mesh-grip-from-mesh">Start again from the mesh (Grip From Mesh)</h3>
+<p>Press <strong>Grip From Mesh</strong> when a grip is badly off. It works the grip out the way the pack's own weapons were made. The
+longest side becomes the blade and its flat stands upright. The fist is centred on the handle at <strong>Grip Along Length</strong>,
+and a Flip is kept. Adjust the result with Edit Grip.</p>
+<h3 id="ch-weapons-moved-it-by-hand-keep-it-or-snap-it-back">Moved it by hand? Keep it or snap it back</h3>
+<p>The Move and Rotate tools work too. While the weapon is selected, a move you make with them is kept: Held Position and
+Held Rotation follow it.</p>
+<p>If the weapon was moved some other way, the inspector warns how far it is from where the game will put it. Choose one:</p>
+<ul>
+<li><strong>Use Current Transform</strong> keeps the weapon where it is now.</li>
+<li><strong>Snap Back</strong> puts it back at its Held Position and Held Rotation.</li>
+</ul>
+<blockquote class="callout warning">
+<p><strong>Warning:</strong> Do not skip this. When the game starts, and at every pick-up, the weapon goes to its Held Position and Held
+Rotation. It does not stay where it was left in the editor.</p>
+</blockquote>
+<h2 id="ch-weapons-make-it-bigger-or-smaller"><span class="hnum">3.5</span> Make it bigger or smaller</h2>
+<ol>
+<li>Type the new length in <strong>Length (m)</strong> and press <strong>Enter</strong>.</li>
+<li>The weapon grows or shrinks around the fist, so the handle stays in the hand.</li>
+<li>With <strong>Adjust Reach</strong> ticked (the default), <strong>Reach Bonus</strong> grows by how much further the tip now reaches. The status
+   line shows it.</li>
+</ol>
+<figure class="figure"><img src="../images/custom-length.jpg" alt="The cleaver at 0.75 m (left) and at 0.975 m (right): the handle stays in the fist and the tip moves out from 0.66 m to 0.86 m"><figcaption>The cleaver at 0.75 m (left) and at 0.975 m (right): the handle stays in the fist and the tip moves out from 0.66 m to 0.86 m</figcaption></figure>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-length-inspector.png" alt="The cleaver&#x27;s inspector after the change: Reach Bonus 0.198, Length 0.975 and the status line reporting +0.20 m"><figcaption>The cleaver&#x27;s inspector after the change: Reach Bonus 0.198, Length 0.975 and the status line reporting +0.20 m</figcaption></figure>
+<p>The Melee Soldier's cleaver, made 30 % longer (0.75 m to 0.975 m):</p>
+<ul>
+<li>The tip reaches 0.858 m in front of the fist instead of 0.66 m.</li>
+<li><strong>Reach Bonus</strong> goes from 0 to +0.198 m.</li>
+<li>Soldier Slash lands its hit 1.398 m ahead instead of 1.20 m.</li>
+<li>Soldier Slash starts from up to 2.598 m away instead of 2.4 m.</li>
+</ul>
+<p>An enemy adds its weapon's <strong>Reach Bonus</strong> to every melee attack. It is added to <strong>Hit Reach</strong> (where the hit lands), to
+<strong>Max Range</strong> (how far away it starts the attack), and to the follow-ups. So a longer weapon hits further with no change
+to the attacks.
+Untick <strong>Adjust Reach</strong> for a weapon that only looks bigger.</p></div>
+<blockquote class="callout note">
+<p><strong>Note:</strong> <strong>Damage Multiplier</strong> and <strong>Poise Multiplier</strong> count for an enemy's melee attacks too, relative to the weapon
+it starts with. Its Attack Data are tuned for that weapon, so with it the enemy hits exactly as they say, and a heavier
+weapon it picks up hits harder. A Melee Soldier (1× cleaver) that grabs the Heavy Club (1.4× damage, 1.8× poise) hits
+1.4 times as hard.</p>
+<p><strong>Tip:</strong> The Scale tool works too. While the weapon is selected, scaling it resizes it around the fist, like
+<strong>Length (m)</strong>, and with <strong>Adjust Reach</strong> ticked its <strong>Reach Bonus</strong> follows.</p>
+</blockquote>
+<h2 id="ch-weapons-give-an-enemy-another-weapon-replace-weapon"><span class="hnum">3.6</span> Give an enemy another weapon (Replace Weapon)</h2>
+<ol>
+<li>Open your variant in Prefab Mode and select its root.</li>
+<li>In <strong>Enemy ▸ Replace Weapon</strong>, set <strong>New Weapon</strong> to a weapon prefab, for example <code>Demo/Prefabs/Weapon Heavy Club</code>.</li>
+<li>Press <strong>Replace Weapon</strong>. The new weapon goes into the same hand with its own grip, <strong>Weapon</strong> points to it, and the old
+   weapon is deleted.</li>
+<li>Press <strong>Select Weapon</strong> and check the grip through an attack.</li>
+<li>Save the prefab.</li>
+</ol>
+<div class="figrow"><figure class="figure half"><img src="../images/custom-replace-weapon.png" alt="Replace Weapon on the Enemy component, right after giving My Soldier the Heavy Club"><figcaption>Replace Weapon on the Enemy component, right after giving My Soldier the Heavy Club</figcaption></figure><figure class="figure half"><img src="../images/custom-replace-weapon-scene.jpg" alt="My Soldier holding the Heavy Club"><figcaption>My Soldier holding the Heavy Club</figcaption></figure></div>
+<p>On a prefab selected in the Project window, the button reads <strong>Replace Weapon (opens the prefab)</strong>. It opens Prefab Mode
+first, so you can undo the change there. On one of the pack's own prefabs it asks first, "Change the pack's prefab?":
+<strong>Create Variant</strong>, the default, saves a Prefab Variant of it in your folder and gives the variant the weapon, since a
+weapon replaced in the pack's prefab is put back by the next update. The same section is on the demo player's inspector.</p>
+<p>The new weapon becomes the one the enemy starts with. Its <strong>Reach Bonus</strong> counts at once, but its multipliers become the
+enemy's baseline: its attacks hit as their Attack Data say. To make it hit harder, press <strong>Make Unique</strong> under an
+attack's <strong>Attack</strong> field and raise <strong>Damage</strong> on the copy (<a href="#ch-attacks">Attacks</a>).</p>
+<p>A weapon prefab is any prefab with a <strong>Weapon Item</strong> on its root. The demo has two in <code>Demo/Prefabs</code>: the Cleaver and the
+Heavy Club (Reach Bonus +0.3 m). To change the grip or size of one of those for your game, make a Prefab Variant of it in
+your folder, change the variant, and use it.</p>
+<h2 id="ch-weapons-make-a-weapon-from-your-own-model"><span class="hnum">3.7</span> Make a weapon from your own model</h2>
+<ol>
+<li>In the Project window, right-click your weapon model and choose <strong>Create ▸ TinnyStudios ▸ RPG Enemies ▸ Weapon From
+   Selected Model</strong>. (Or select it and use <strong>Tools ▸ TinnyStudios ▸ RPG Enemies ▸ Create Weapon From Selected Model</strong>.)</li>
+<li>A prefab called <code>Weapon &lt;Name&gt;</code> is saved next to the model. The model lies along its length inside it, with a Weapon
+   Item already set up. For a model inside the pack's folders, it asks where to save, starting in your own folder.</li>
+<li>Select the new prefab. The grip is worked out from the mesh. The bulkier end is taken as the head, and the fist sits
+   12 % of the way up from the other end. The Scene view shows where the fist will be.</li>
+<li>The hand holds the head? Press <strong>Flip</strong>. Wrong size? Set <strong>Length (m)</strong>. A model shorter than 0.25 m or longer than 3 m
+   starts at 1 m.</li>
+<li>Give it to an enemy with <strong>Replace Weapon</strong>.</li>
+</ol>
+<div class="figrow"><figure class="figure half"><img src="../images/custom-create-weapon.png" alt="A weapon made from a model: its Weapon Item with the grip worked out, and not yet in a hand"><figcaption>A weapon made from a model: its Weapon Item with the grip worked out, and not yet in a hand</figcaption></figure><figure class="figure half"><img src="../images/custom-create-weapon-scene.jpg" alt="The same weapon open in Prefab Mode: the fist on the handle, the blade axis and the tip 0.88 m away"><figcaption>The same weapon open in Prefab Mode: the fist on the handle, the blade axis and the tip 0.88 m away</figcaption></figure></div>
+<p>The Console reports the new prefab's length and grip. <strong>Ground Height</strong> is set so the weapon rests on the floor when it is
+dropped.</p>
+<h2 id="ch-weapons-weapons-lying-around-to-pick-up"><span class="hnum">3.8</span> Weapons lying around to pick up</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/world-is-a-weapon.jpg" alt="The camp&#x27;s soldiers throwing barrels, and disarmed soldiers running for the nearest weapon"><figcaption>The camp&#x27;s soldiers throwing barrels, and disarmed soldiers running for the nearest weapon</figcaption></figure>
+<p>Enemies drop their weapon when they are parried, sometimes when they are staggered, and when they die. A disarmed enemy
+with a <strong>Pick Up Weapon</strong> action runs for the nearest free weapon and picks it up. The demo player can pick weapons up
+too.</p>
+<ul>
+<li><strong>To place a weapon</strong>, drag a weapon prefab into your scene. It is picked up with its own grip, so set the grip on the
+  prefab: for one of the pack's weapons, on a Prefab Variant of it in your folder, and place the variant.</li>
+<li><strong>For a rack</strong>, add a <strong>Weapon Rack</strong> component to an object. It hands a new copy of its <strong>Weapon Prefab</strong> to each
+  unarmed enemy that comes to it: again your own weapon prefab, or your variant of one of the pack's.</li>
+<li><strong>How far enemies look</strong>: <strong>Enemy Context ▸ Weapon Search Radius</strong> (15 m) and <strong>Weapon Rack Search Radius</strong> (25 m).</li>
+<li><strong>When they drop it</strong>: <strong>Enemy ▸ Drop Weapon When Parried</strong>, <strong>Drop Weapon Chance On Stagger</strong> and <strong>Drop Weapon On
+  Death</strong>. Untick <strong>Starts With Weapon</strong> for an enemy that must arm itself first.</li>
+</ul></div>
+</section><section class="chapter"><h1 class="chapter" id="ch-animations"><span class="hnum">4</span> Animations</h1>
+<p>Every character plays the same base Animator, <code>EnemyBase</code>, through its own <strong>Animator Override Controller</strong>. That
+controller is a list of states, each with the clip this character plays for it. The <strong>Clip Mapping</strong> in the Enemy Animator inspector shows that
+list, and you change a clip by dropping another one on it. This chapter replaces clips, adds new moves in the spare slots
+or in states of your own, and fixes sliding feet.</p>
+<h2 id="ch-animations-open-the-clip-mapping"><span class="hnum">4.1</span> Open the Clip Mapping</h2>
+<figure class="figure small"><img src="../images/custom-clip-mapping.png" alt="Clip Mapping on My Soldier, filtered to &quot;Slash&quot;: the warning that its clips are shared with three other prefabs, Make Unique, the legend of the two markers, the Find State filter, and the Attacks group; 1 the pose button, 2 the clip, 3 a marker"><figcaption>Clip Mapping on My Soldier, filtered to &quot;Slash&quot;: the warning that its clips are shared with three other prefabs, Make Unique, the legend of the two markers, the Find State filter, and the Attacks group; 1 the pose button, 2 the clip, 3 a marker</figcaption></figure>
+<ol>
+<li>Open your variant in Prefab Mode and select its root.</li>
+<li>In <strong>Enemy Animator</strong>, open <strong>Clip Mapping</strong>. It is near the top, under Swap Model.</li>
+<li>Type in <strong>Find State</strong> to show only the states you want, for example "Slash".</li>
+</ol>
+<p>The states are grouped: <strong>Your states</strong> first (states you added yourself, see "Add a state of your own" below), then
+<strong>Locomotion</strong>, <strong>Loops</strong>, <strong>Held poses</strong>, <strong>Reactions and one-shots</strong>, <strong>Attacks</strong>, and <strong>Spare slots for your own
+moves</strong>. Each row has:</p>
+<ol>
+<li><strong>▶</strong>: poses the character in that state in the Scene view, with a time line under the row.</li>
+<li><strong>The clip</strong>: drop another clip here to replace it.</li>
+<li>
+<p><strong>A marker</strong> at the end of the row, when the state is not playing a clip of its own. The legend above <strong>Find State</strong>
+   names the two:</p>
+<ul>
+<li><strong>⚠ Fallback (no clip of its own)</strong>: the state has no clip, or plays the one its fallbacks fill it with. A
+  character with no QuickSlash clip plays Idle there, for example. That only matters if an attack or action plays
+  the state.</li>
+<li><strong>A link, Borrowed through State Overrides</strong>: this Enemy Animator's <strong>State Overrides</strong> play another state for the
+  animation that uses this one, on purpose.</li>
+</ul>
+</li>
+</ol>
+<p>A clip you drop is never marked, whatever its name. Nor is an empty spare slot. Hover a state's name for what it plays.</p>
+<h2 id="ch-animations-make-unique-first"><span class="hnum">4.2</span> Make Unique first</h2>
+<p>A Prefab Variant plays the same Override Controller, its animation set, as its original. The yellow warning says so:
+"The animation set "Grunt" (an Override Controller) is shared with 3 other prefabs: Melee Soldier, Berserker, Starter
+Humanoid Enemy. Changing a clip here changes them too, so a drop asks first."</p>
+<ol>
+<li>Press <strong>Make Unique</strong>. It copies the Override Controller next to your prefab, for example
+   <code>My Soldier.overrideController</code>, and gives it to your variant.</li>
+<li>The warning goes, and the foldout now reads <strong>Clip Mapping · My Soldier</strong>. The original is untouched.</li>
+</ol>
+<p>On one of the pack's own characters, Make Unique asks first, "Change the pack's prefab?": <strong>Create Variant</strong>, the
+default, saves a Prefab Variant of it in your folder, such as "My Melee Soldier", and gives the variant its own copy. A
+clip dropped on one of the pack's own prefabs asks the same.</p>
+<h3 id="ch-animations-dropped-a-clip-first-it-asks">Dropped a clip first? It asks</h3>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-clip-shared-dialog.png" alt="What a drop on a shared controller asks: Make Unique and replace, Change it for all 4, or Cancel"><figcaption>What a drop on a shared controller asks: Make Unique and replace, Change it for all 4, or Cancel</figcaption></figure>
+<p>Drop a clip on a controller that other prefabs play too, and Unity asks before it changes anything:</p>
+<ul>
+<li><strong>Make Unique and replace</strong> gives your character its own copy first, then puts the clip in the copy. Only your
+  character changes. Choose this for your own enemies and variants.</li>
+<li><strong>Change it for all 4</strong> (the number of prefabs that play it) puts the clip in the shared controller, so every one of
+  them changes. It won't ask again for that controller until Unity restarts.</li>
+<li><strong>Cancel</strong> changes nothing.</li>
+</ul></div>
+<blockquote class="callout warning">
+<p><strong>Warning:</strong> Change it for all changes the pack's controller: the original enemy and every other variant of it play
+it, and the next pack update resets it.</p>
+</blockquote>
+<p>A drop on one of the pack's animation sets that no other prefab plays asks too, "Change the pack's clip?": <strong>Make Unique
+and replace</strong>, the default, or <strong>Change the pack's</strong>, which the next update puts back.</p>
+<h2 id="ch-animations-replace-one-clip"><span class="hnum">4.3</span> Replace one clip</h2>
+<ol>
+<li>Drag an animation clip from the Project window onto a state's clip. Or click the small circle and pick one.</li>
+<li>
+<p>The tool does what the new clip needs, and the status line says what it did:</p>
+<ul>
+<li>a clip file that was never set up gets the import settings AI characters need;</li>
+<li>an attack or other one-shot gets its hit frame detected again;</li>
+<li>a walk or run gets the stride speeds measured again, anything else its height above the ground.</li>
+</ul>
+</li>
+<li>
+<p>Press <strong>▶</strong> on the row to pose the character in the new clip. Scrub it or press <strong>Loop</strong>, press <strong>Hit</strong> to see the hit
+   frame, then <strong>Stop</strong>.</p>
+</li>
+</ol>
+<figure class="figure small"><img src="../images/custom-clip-replaced.png" alt="After Make Unique, the Brute&#x27;s HeavySmash clip dropped on Slash1: the status line reports the hit frame at 58 %, and the character is posed in it, with the time line under the row"><figcaption>After Make Unique, the Brute&#x27;s HeavySmash clip dropped on Slash1: the status line reports the hit frame at 58 %, and the character is posed in it, with the time line under the row</figcaption></figure>
+<p>Any Humanoid clip plays on any Humanoid character. So you can borrow clips from the pack's other characters, from the
+Asset Store or from your own animator. To undo a replacement, press <strong>Ctrl+Z</strong>. To put a state back on its fallback, clear
+its clip field (pick <strong>None</strong> in the clip picker).</p>
+<h2 id="ch-animations-replace-a-whole-set-from-a-folder"><span class="hnum">4.4</span> Replace a whole set from a folder</h2>
+<ol>
+<li>Name your clip files <code>Prefix_Anim_State</code>, for example <code>Orc_Anim_Idle</code>, <code>Orc_Anim_Walking</code> and <code>Orc_Anim_Slash1</code>, and
+   put them in one folder. Only <code>Prefix_Anim_Idle</code> is required: missing states fall back to similar ones.</li>
+<li>Select the folder and run <strong>Tools ▸ TinnyStudios ▸ RPG Enemies ▸ Create Enemy Animator From Selected Folder</strong>.</li>
+<li>It sets up the clips' import settings and makes <code>Prefix.overrideController</code> in the folder. The Console lists which states
+   fall back, and any clip names that matched no state. (For clips inside the pack's folders it asks "Save in the pack's
+   folder?" first: <strong>Save in your folder</strong>, the default, asks where.)</li>
+<li>Give the controller to your enemy: Swap Model with <strong>Animations</strong> set to <strong>Override Controller</strong>
+   (<a href="#ch-your-character">Your character</a>), or drag it onto the model's <strong>Animator ▸ Controller</strong>.</li>
+<li>Press <strong>Detect Hit Frames</strong> and <strong>Measure Stride Speeds</strong> (below the Clip Mapping).</li>
+</ol>
+<p>The Manual's Authoring chapter lists every state name and its fallbacks.</p>
+<h2 id="ch-animations-hit-frames-stride-speeds-and-grounding"><span class="hnum">4.5</span> Hit frames, stride speeds and grounding</h2>
+<p>Three buttons sit under the Clip Mapping:</p>
+<ul>
+<li><strong>Detect Hit Frames</strong> finds the moment each attack hits. It reads a Hit Animation Event on the clip if there is one.
+  Otherwise it takes the moment the weapon hand, or the foot for kicks, moves fastest. The results are in <strong>Hit
+  Markers</strong>, 0 to 1 through the clip; you can edit them by hand.</li>
+<li><strong>Measure Stride Speeds</strong> times how fast each walk and run carries the feet, at this character's size, so the feet do not
+  slide. It also measures which states float or sink (<strong>Ground Offsets</strong>).</li>
+<li><strong>Ground Clips</strong> changes the clips' import settings so the feet rest on the ground.</li>
+</ul>
+<blockquote class="callout warning">
+<p><strong>Warning:</strong> Ground Clips changes the clip files themselves, and every character that plays them. Use it on your own
+clips, not on the pack's.</p>
+</blockquote>
+<h2 id="ch-animations-add-a-new-move-with-custom1-to-custom6"><span class="hnum">4.6</span> Add a new move with Custom1 to Custom6</h2>
+<p>Each character has six spare slots, <strong>Custom1</strong> to <strong>Custom6</strong>, for new attacks and emotes. No code is needed.</p>
+<ol>
+<li>In the Clip Mapping, type "Custom" in <strong>Find State</strong>. The group <strong>Spare slots for your own moves</strong> shows.</li>
+<li>Drop your clip on <strong>Custom1</strong>. Its hit frame is detected, as for any attack. (On a variant, press <strong>Make Unique</strong>
+   first, or choose <strong>Make Unique and replace</strong> when the drop asks.)</li>
+<li>Press <strong>▶</strong> to check it.</li>
+<li>For an attack, make an Attack Data and set its <strong>Animation State</strong> to <strong>Custom1</strong> (<a href="#ch-attacks">Attacks</a>).</li>
+<li>For an emote, add a <strong>Play Animation Action</strong> to the enemy and set its <strong>Animation State</strong> to <strong>Custom1</strong>.</li>
+</ol>
+<figure class="figure small"><img src="../images/custom-custom-slot.png" alt="The spare slots on My Soldier: the Boss&#x27;s Sweep1 clip dropped on Custom1 and posed at its hit frame; the empty slots play Idle"><figcaption>The spare slots on My Soldier: the Boss&#x27;s Sweep1 clip dropped on Custom1 and posed at its hit frame; the empty slots play Idle</figcaption></figure>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-attack-animation-state.png" alt="An Attack Data asset using the slot: Animation State set to Custom1"><figcaption>An Attack Data asset using the slot: Animation State set to Custom1</figcaption></figure>
+<p>Each character fills its own slots. An Attack Data that names Custom1 plays whatever each character has in Custom1. A
+character with nothing there plays its generic Attack clip, or Idle.</p></div>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-play-animation.png" alt="A victory dance with no code: a Play Animation Action under Actions, playing Custom2 for 2 seconds"><figcaption>A victory dance with no code: a Play Animation Action under Actions, playing Custom2 for 2 seconds</figcaption></figure>
+<p>A Play Animation Action stops, faces the target and plays its state for <strong>Duration</strong> seconds. Taunts, roars and heals are
+all made with it. Add it to a new child of <strong>Actions</strong>. Set <strong>Name</strong>, <strong>Weight</strong>, <strong>Animation State</strong> and <strong>Cooldown
+Duration</strong>, and give it considerations that say when it should play (<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>). <strong>Effect Cue</strong> and
+<strong>On Effect</strong> can play a sound or call your own objects at <strong>Effect Time</strong>.</p></div>
+<h2 id="ch-animations-add-a-state-of-your-own-add-state"><span class="hnum">4.7</span> Add a state of your own (Add State…)</h2>
+<p>Six slots not enough, or want a move with a name, such as ShieldBash or WarCry? Add a state of your own. Every
+character gets it, no code is needed, and a pack update keeps it.</p>
+<div class="float-group"><figure class="figure side"><img src="../images/extending-custom-action-add-state.png" alt="Clip Mapping ▸ Your states ▸ Add State… (1), filled in: Name (2), Kind (3), Attack (4), Falls back to (5), Upper body too (6), where it is saved (7), and Add State (8)"><figcaption>Clip Mapping ▸ Your states ▸ Add State… (1), filled in: Name (2), Kind (3), Attack (4), Falls back to (5), Upper body too (6), where it is saved (7), and Add State (8)</figcaption></figure>
+<ol>
+<li>In the Clip Mapping, press <strong>Add State…</strong> next to <strong>Your states</strong> (1), at the top of the list.</li>
+<li><strong>Name</strong> (2): letters, digits and underscores, starting with a letter, such as ShieldBash. It is checked as you type:
+   a name the pack already uses, or one of your states has, says why it won't do.</li>
+<li><strong>Kind</strong> (3): <strong>One shot</strong> plays once, then back to walking. <strong>Loop</strong> loops until another animation plays. <strong>Hold</strong>
+   plays once and keeps its last frame.</li>
+<li><strong>Attack</strong> (4): tick it for an attack. Its hit frame is detected when you drop a clip, and it is listed with the
+   attacks.</li>
+<li><strong>Falls back to</strong> (5): what a character with no clip of its own plays instead, then Idle. For an attack it starts on
+   <strong>Its own attack</strong>: each character plays the first attack clip it has, a creature's Attack, the Melee Soldier's
+   Slash1, the Heavy Melee's HeavySmash and so on, so none of them stands idle.</li>
+<li><strong>Upper body too</strong> (6): leave it off. It is for code that plays the state over the legs' walk, as the guard does.</li>
+<li><strong>Saved in</strong> (7): an <strong>Extra Animator States</strong> asset in your folder, made next to your prefab the first time.</li>
+<li>Press <strong>Add State</strong> (8). Every character now has the state and plays its fallback. <strong>Ctrl+Z</strong> takes it out again.</li>
+<li>Drop your clip on the new state, as on any state (press <strong>Make Unique</strong> first on a variant), and press <strong>▶</strong> to check
+   it.</li>
+</ol>
+<p>Then name it where the move is chosen: an Attack Data's <strong>Animation State</strong>, or a Play Animation Action's. Your states
+are listed first in those menus, under <strong>Your states</strong>. <strong>Edit List</strong>, next to Add State…, selects your Extra Animator
+States asset, where you rename, change or <strong>Remove</strong> a state.</p>
+<p>Your states live in your asset, not in the pack, so a pack update keeps them: the base Animator gets them back by itself,
+and the Console says so. Each of your characters with its own animation set (<strong>Make Unique</strong>) keeps the clip you gave it.
+The pack's own characters play the fallback.</p></div>
+<blockquote class="callout note">
+<p><strong>Note:</strong> A <strong>Hold</strong> state keeps its pose only on characters that list it in <strong>Enemy Animator ▸ Hold States</strong>. Add
+State… lists it on the character you added it from; add it to your other characters' Hold States yourself.</p>
+</blockquote>
+<h2 id="ch-animations-guard-without-a-guard-clip"><span class="hnum">4.8</span> Guard without a guard clip</h2>
+<p>Enemies that guard play a Guard clip on their upper body. A Humanoid character without one can use a <strong>Humanoid Guard
+Pose</strong> instead:</p>
+<ol>
+<li>Open your variant and select the model, the object with the <strong>Animator</strong>.</li>
+<li>Press <strong>Add Component</strong> and search for <strong>Humanoid Guard Pose</strong>.</li>
+<li><strong>Style</strong>: <strong>Shield</strong> (the left hand brings a shield up) or <strong>Weapon</strong> (the weapon held across the body). After changing
+   it, choose <strong>Use Style Defaults</strong> from the component's menu.</li>
+<li><strong>Shield</strong> (optional): the shield object in the left hand.</li>
+<li>Press Play, tick <strong>Preview Raised</strong>, and tune the stance while you watch.</li>
+</ol>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-guard-pose.png" alt="A Humanoid Guard Pose added to the model: the style, the stance, where each hand goes and how the guard snaps up"><figcaption>A Humanoid Guard Pose added to the model: the style, the stance, where each hand goes and how the guard snaps up</figcaption></figure>
+<p>The pose is layered on whatever the character plays, so the guard also works while walking. Hand positions are measured in
+arm lengths, so the same numbers suit any body. With neither a Guard clip nor a guard pose, a guarding enemy shows a
+see-through shield, so the player can still read the guard.</p></div>
+</section><section class="chapter"><h1 class="chapter" id="ch-attacks"><span class="hnum">5</span> Attacks</h1>
+<p>An attack is two things. An <strong>Attack Data</strong> asset says what the attack is: its range, timing, damage, animation, warning
+colour and sounds. An <strong>Attack Action</strong> on the enemy says when to use it. One Attack Data can serve many enemies. This
+chapter tunes an attack, makes a new one and gives it an animation.</p>
+<h2 id="ch-attacks-tune-an-attack"><span class="hnum">5.1</span> Tune an attack</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-attack-data.png" alt="The top of the Club Sweep Attack Data: type, range, timing, damage and the melee settings"><figcaption>The top of the Club Sweep Attack Data: type, range, timing, damage and the melee settings</figcaption></figure>
+<ol>
+<li>Open your variant, expand <strong>Actions</strong> and select the attack, for example <strong>Soldier Slash</strong>.</li>
+<li>Its <strong>Attack</strong> field points to the Attack Data. Under it, a note says it is the pack's and how many actions use it:
+   tuning it would change them all. Press <strong>Make Unique</strong> there.</li>
+<li>Soldier Slash chains into Soldier Slash 2, so it asks "Copy its follow-ups too?". <strong>Copy the combo</strong> copies both,
+   chained the same way; <strong>Only Soldier Slash</strong> copies the first one. The copies, <strong>My Soldier Slash</strong> and <strong>My Soldier
+   Slash 2</strong>, go next to your prefab and keep their Display Names, and the <strong>Attack</strong> field now points at yours. <strong>Ctrl+Z</strong>
+   points it back. Now your change stays yours.</li>
+<li>Click the <strong>Attack</strong> field to find your copy in the Project window, select it, and change the numbers. The table below
+   says which ones.</li>
+<li>Press Play and try it. You can also change an Attack Data during Play mode and tune while you fight. Unlike most
+   changes made in Play mode, these are kept when you stop.</li>
+</ol>
+<p>A melee attack runs in three phases. The <strong>wind-up</strong> is the warning the player reads, the <strong>active</strong> part deals the
+damage, and the <strong>recovery</strong> is the player's chance to hit back.</p></div>
+<table>
+<thead>
+<tr>
+<th>To change</th>
+<th>Change these fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>How far away it starts the attack</td>
+<td><strong>Min Range</strong> and <strong>Max Range</strong></td>
+</tr>
+<tr>
+<td>Where the hit lands</td>
+<td><strong>Hit Reach</strong> (metres in front) and <strong>Hit Radius</strong> (the size of the hit)</td>
+</tr>
+<tr>
+<td>How long the warning lasts</td>
+<td><strong>Windup</strong></td>
+</tr>
+<tr>
+<td>How long the opening after it lasts</td>
+<td><strong>Recovery</strong></td>
+</tr>
+<tr>
+<td>How often it can attack</td>
+<td><strong>Cooldown</strong></td>
+</tr>
+<tr>
+<td>How hard it hits</td>
+<td><strong>Damage</strong>, <strong>Poise Damage</strong> (stagger), <strong>Knockback</strong>, <strong>Guard Damage</strong> (drains a raised guard)</td>
+</tr>
+<tr>
+<td>Whether it can be blocked</td>
+<td><strong>Unblockable</strong></td>
+</tr>
+<tr>
+<td>Whether the player can sidestep it</td>
+<td>Untick <strong>Track Target During Windup</strong></td>
+</tr>
+<tr>
+<td>Combos</td>
+<td><strong>Follow Ups</strong> and <strong>Follow Up Chance</strong>. Each follow-up is an Attack Data of its own: <strong>Make Unique</strong>'s <strong>Copy the combo</strong> gives the attack its own copy of each</td>
+</tr>
+<tr>
+<td>The warning colour</td>
+<td><strong>Telegraph Color</strong>, and <strong>Show Ground Telegraph</strong> for a disc on the ground</td>
+</tr>
+<tr>
+<td>Its sounds and effects</td>
+<td><strong>Feedback ▸ Windup</strong>, <strong>Release</strong> and <strong>Impact</strong> (<a href="#ch-look-and-sound">Look and sound</a>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout note">
+<p><strong>Note:</strong> The difficulty profile scales <strong>Windup</strong>, <strong>Cooldown</strong> and <strong>Damage</strong>, and adds combo hits. Tune at Normal
+(<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>).</p>
+<p><strong>Tip:</strong> A weapon's <strong>Reach Bonus</strong> is added to <strong>Hit Reach</strong> and <strong>Max Range</strong> of melee attacks. To make one enemy
+reach further, lengthen its weapon instead of changing a shared attack (<a href="#ch-weapons">Weapons</a>).</p>
+</blockquote>
+<h2 id="ch-attacks-make-a-new-attack"><span class="hnum">5.2</span> Make a new attack</h2>
+<p>This example gives My Soldier a second swing, <strong>Club Sweep</strong>, with its own animation.</p>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-attack-action.png" alt="The Club Sweep Attack Action: a copy of Soldier Slash with its own Name, the same Weight and considerations (listed under Only when and More likely when), the cooldown taken from its Attack Data, and the new Attack Data, with the note that its follow-up, Soldier Slash 2, is the pack&#x27;s, and Make Unique"><figcaption>The Club Sweep Attack Action: a copy of Soldier Slash with its own Name, the same Weight and considerations (listed under Only when and More likely when), the cooldown taken from its Attack Data, and the new Attack Data, with the note that its follow-up, Soldier Slash 2, is the pack&#x27;s, and Make Unique</figcaption></figure>
+<ol>
+<li><strong>Make the data.</strong> Select <code>Data/Attacks/Soldier Slash</code>, press <strong>Ctrl+D</strong>, move the copy into your folder and rename it
+   <strong>Club Sweep</strong>. (For an empty one, right-click in your folder and choose <strong>Create ▸ TinnyStudios ▸ RPG Enemies ▸
+   Attack Data</strong>.)</li>
+<li><strong>Set it up.</strong> Set <strong>Display Name</strong> and the numbers. The copy still chains into the pack's Soldier Slash 2: clear
+   <strong>Follow Ups</strong> for a single hit. For a combo of your own, keep it, and after step 5 press <strong>Make Unique</strong> under the
+   action's <strong>Attack</strong> field: it copies Soldier Slash 2 into your folder and chains Club Sweep into the copy.</li>
+<li><strong>Pick its animation.</strong> Set <strong>Animation State</strong> (see "Give it an animation" below).</li>
+<li><strong>Make the action.</strong> Open your variant, expand <strong>Actions</strong>, select <strong>Soldier Slash</strong> and press <strong>Ctrl+D</strong>. Rename the copy
+   <strong>Club Sweep</strong>.</li>
+<li><strong>Point it at the data.</strong> On the copy's <strong>Attack Action</strong>, set <strong>Name</strong> to Club Sweep, and drag your Attack Data into
+   <strong>Attack</strong>.</li>
+<li><strong>Keep the considerations.</strong> They decide when it may run (see below).</li>
+<li><strong>Try it.</strong> Press Play, press <strong>F1</strong>, and watch Club Sweep among the enemy's scores.</li>
+</ol>
+<p>Change <strong>Name</strong> too: the AI Debug View shows it, and sound profiles look actions up by it. A copy keeps the original's name
+until you change it; meanwhile the inspector warns that two actions share it, with a button to rename the copy.</p>
+<p>The considerations copied from Soldier Slash each score the attack from 0 to 1. The scores are multiplied, so any one at 0
+stops the attack. The top of the action's inspector lists them: <strong>Only when</strong> the ones that can stop it, <strong>More likely
+when</strong> the ones that only raise or lower its score:</p>
+<ul>
+<li><strong>Has Target</strong>: it is fighting someone.</li>
+<li><strong>Has Weapon</strong>: it is armed. Remove this for an unarmed move.</li>
+<li><strong>In Attack Range</strong>: the target is inside this attack's own <strong>Min Range</strong> to <strong>Max Range</strong>.</li>
+<li><strong>Can Take Attack Token</strong>: it is its turn. Only a few enemies attack at once.</li>
+<li><strong>Behind Target Bonus</strong>: 0.6 in front of the player, rising to 1 behind: it prefers the player's back.</li>
+</ul>
+<p><strong>Weight</strong> (0 to 1) is how much the enemy wants this action compared with its others. Soldier Slash has 0.75. The
+action's <strong>Cooldown Duration</strong> is greyed out and reads "From Attack Data: 2.2 s": an attack's cooldown is its Attack
+Data's <strong>Cooldown</strong>, so set it there.</p></div>
+<h2 id="ch-attacks-give-it-an-animation"><span class="hnum">5.3</span> Give it an animation</h2>
+<ul>
+<li><strong>Animation State</strong> plays one clip for the whole attack. The clip is sped up or slowed down so its hit frame lands exactly
+  when the damage is dealt. Pick any state the character has a clip for.</li>
+<li>A new clip? Put it in a spare slot, <strong>Custom1</strong> to <strong>Custom6</strong>, or in a state of your own made with <strong>Add State…</strong>, and
+  pick it here (<a href="#ch-animations">Animations</a>).</li>
+<li><strong>Windup State</strong>, <strong>Active State</strong> and <strong>Recover State</strong> are for attacks made of three clips, like a charge: a wind-up, a
+  looping run and a recovery. Leave <strong>Animation State</strong> empty to use them.</li>
+<li><strong>Windup Anim</strong> and <strong>Active Anim</strong> are fallbacks for characters without these states, such as those without a rig.</li>
+</ul>
+<p>The animation only changes how the attack looks. Where and when it hits comes from the numbers above.</p>
+<h2 id="ch-attacks-make-it-read-well"><span class="hnum">5.4</span> Make it read well</h2>
+<p>Players forgive a hard attack they can see coming.</p>
+<ul>
+<li><strong>Telegraph Color</strong>: the enemy glows this colour during the wind-up. Red for a normal hit, purple or orange for special
+  ones.</li>
+<li><strong>Show Ground Telegraph</strong>: a disc on the ground shows the area during the wind-up. Area attacks should have one.</li>
+<li><strong>Unblockable</strong>: a red flash warns the player to dodge instead of block.</li>
+<li><strong>Windup</strong>: a longer wind-up is easier to read; 0.4 to 1 s suits most attacks.</li>
+<li><strong>Track Target During Windup</strong>: untick it for a lunge or a charge the player can sidestep.</li>
+</ul>
+<figure class="figure small"><img src="../images/boss-phase-two.jpg" alt="The Boss in phase two: the red wind-up glow of an unblockable attack, and the Fire Ring&#x27;s disc on the ground"><figcaption>The Boss in phase two: the red wind-up glow of an unblockable attack, and the Fire Ring&#x27;s disc on the ground</figcaption></figure>
+</section><section class="chapter"><h1 class="chapter" id="ch-look-and-sound"><span class="hnum">6</span> Look and sound</h1>
+<p>Sounds, particles, camera shake, hit-stop and colour flashes all come from the pack's feedback system. Until you add your
+own, grey placeholders show where effects will go, so a scene looks complete before any art exists. This chapter gives an
+enemy its own sounds and effects, changes its flashes and warning colours, and restyles the icons over its head.</p>
+<h2 id="ch-look-and-sound-where-a-sound-or-effect-belongs"><span class="hnum">6.1</span> Where a sound or effect belongs</h2>
+<table>
+<thead>
+<tr>
+<th>It belongs to</th>
+<th>Put it on</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The character</td>
+<td>Its <strong>Feedback Profile</strong></td>
+<td>Hurt, death and alert sounds, footsteps, a voice</td>
+</tr>
+<tr>
+<td>The move</td>
+<td>The <strong>Attack Data</strong>'s cues: <strong>Windup</strong>, <strong>Release</strong>, <strong>Impact</strong></td>
+<td>A swing, a slam, a battle cry</td>
+</tr>
+<tr>
+<td>Any action</td>
+<td>The action's <strong>Feedback ▸ Begin</strong> and <strong>End</strong> cues</td>
+<td>A horn, a heal sparkle</td>
+</tr>
+<tr>
+<td>The weapon</td>
+<td>The <strong>Weapon Item</strong>'s <strong>Feedback ▸ Equip</strong>, <strong>Drop</strong>, <strong>Land</strong></td>
+<td>A draw, a clatter</td>
+</tr>
+</tbody>
+</table>
+<p>A cue is the same everywhere. It has <strong>Clips</strong> (picked at random, with pitch and volume variation) and a <strong>Prefab</strong>, such
+as a particle effect. Its extras are <strong>Camera Shake</strong>, <strong>Hit Stop</strong>, a colour <strong>Flash</strong> and a <strong>Light</strong>.</p>
+<h2 id="ch-look-and-sound-give-an-enemy-its-own-sounds"><span class="hnum">6.2</span> Give an enemy its own sounds</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-feedback-emitter.png" alt="My Soldier&#x27;s Feedback Emitter after Make Unique: its own profile, My Soldier Feedback, with the Make Unique button next to it, its footsteps, and the list of every moment this character raises"><figcaption>My Soldier&#x27;s Feedback Emitter after Make Unique: its own profile, My Soldier Feedback, with the Make Unique button next to it, its footsteps, and the list of every moment this character raises</figcaption></figure>
+<p>Your variant already uses the Melee Soldier's profile, <code>Feedback/Profiles/Melee Soldier Feedback</code>, one of the pack's. Give
+it a profile of its own:</p>
+<ol>
+<li>Open your variant, select the root, and press <strong>Make Unique</strong> next to <strong>Feedback Emitter ▸ Profile</strong>. It saves <strong>My
+   Soldier Feedback</strong> next to your prefab and gives it to your variant.</li>
+<li>The new profile starts empty, with the Melee Soldier's as its <strong>Parent</strong>. That is better than a copy: My Soldier plays
+   every sound it did, the pack's later fixes to those sounds still reach it, and what you add is for My Soldier only.</li>
+<li>The list <strong>Moments on this character</strong> shows every moment and where its cue comes from, such as "parent profile".
+   Press <strong>+</strong> on a row, such as <strong>Hurt</strong>, to add that moment to your profile. (Pressed while the profile is still the
+   pack's, <strong>+</strong> asks first, and <strong>Make Unique and add</strong> does step 1 for you.)</li>
+<li>Open <strong>Edit Profile: My Soldier Feedback</strong> at the bottom of the component. Each row is one moment, grouped such as
+   <strong>Attack</strong> and <strong>Taking Hits</strong>. Open a row's <strong>Cue</strong>, drag your audio clips onto its <strong>Clips</strong> list, and a particle
+   prefab onto its <strong>Prefab</strong>.</li>
+<li>Press Play. In Play mode, a moment's <strong>▶</strong> button plays it on the spot.</li>
+</ol></div>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-feedback-profile.png" alt="Edit Profile at the bottom of the Feedback Emitter: My Soldier Feedback, whose Parent is Melee Soldier Feedback, holds one row, Hurt, added with +; its Cue is open, with your clip in its Clips list and the rest of its Audio section"><figcaption>Edit Profile at the bottom of the Feedback Emitter: My Soldier Feedback, whose Parent is Melee Soldier Feedback, holds one row, Hurt, added with +; its Cue is open, with your clip in its Clips list and the rest of its Audio section</figcaption></figure>
+<p>A profile's <strong>Parent</strong> supplies every moment the profile does not list. The Melee Soldier's own profile has its hurt
+grunt, its death thud and poof, and a generic swing and impact. Its parent, <strong>Humanoid Base Feedback</strong>, has what the
+humanoids share: the block clang and sparks, the parry chime, the guard break, the stagger stars and the dodge. Footsteps
+are in neither: in the demo scene they come from the <strong>Feedback Manager</strong>'s default profile, <code>Demo/Feedback/Demo Default
+Feedback</code>. In your own scene, give your profile a <strong>Footstep</strong> row.</p>
+<p>For your enemy with no profile, press <strong>Create</strong> next to the empty <strong>Profile</strong> field. It asks where to save the new
+profile, starting next to the prefab you are editing, and never in the pack's folders. The profile starts with empty
+Hurt, Died, Footstep, Blocked and Alert rows. On one of the pack's own prefabs, Create and Make Unique ask first, "Change
+the pack's prefab?": <strong>Create Variant</strong>, the default, saves a Prefab Variant of it in your folder and gives the profile to
+the variant.</p></div>
+<blockquote class="callout tip">
+<p><strong>Tip:</strong> A new model brings a new voice. Set <strong>Feedback Profile</strong> in the Swap Model section. The hurt, death and alert
+sounds then change with the model, while the attack sounds stay with the attacks (<a href="#ch-your-character">Your character</a>). Footsteps need no
+setup; for exact steps, add Animation Events named <code>Footstep</code> to your own walk and run clips. (Not to the pack's:
+events live in its clips' import settings, which a pack update replaces.)</p>
+</blockquote>
+<h2 id="ch-look-and-sound-give-an-attack-its-own-sound-and-effect"><span class="hnum">6.3</span> Give an attack its own sound and effect</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/inspector-attack-feedback.png" alt="Boss Slam&#x27;s Feedback: the Windup cue open with its audio, visual and extras, and the Release cue with a boom, camera shake and hit-stop"><figcaption>Boss Slam&#x27;s Feedback: the Windup cue open with its audio, visual and extras, and the Release cue with a boom, camera shake and hit-stop</figcaption></figure>
+<ol>
+<li>Select the attack's own Attack Data, the copy <strong>Make Unique</strong> made (<a href="#ch-attacks">Attacks</a>), and open <strong>Feedback</strong>.</li>
+<li><strong>Windup</strong> plays from the start of the wind-up until the swing, <strong>Release</strong> plays with the swing, and <strong>Impact</strong> plays
+   where it hits.</li>
+<li>Drop audio clips into <strong>Clips</strong>, and a particle prefab into <strong>Prefab</strong>. Set <strong>Camera Shake</strong> and <strong>Hit Stop</strong> for heavy
+   hits.</li>
+<li>Every enemy that uses your copy now plays it.</li>
+</ol>
+<p><strong>Layering</strong> decides whether other cues play too. <strong>Replace</strong> plays only this cue. <strong>Add</strong> also plays the next one found,
+so an attack's own crunch can sit on top of the character's usual hit sound.</p></div>
+<h2 id="ch-look-and-sound-flashes-and-warning-colours"><span class="hnum">6.4</span> Flashes and warning colours</h2>
+<table>
+<thead>
+<tr>
+<th>What the player sees</th>
+<th>Where to change it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A white flash on every hit</td>
+<td>Built in. For another colour, set <strong>Flash</strong> on the <strong>Hurt</strong> cue in your own profile (<strong>Make Unique</strong>, then <strong>+</strong> on Hurt, above): it replaces the white.</td>
+</tr>
+<tr>
+<td>The glow during an attack's wind-up</td>
+<td><strong>Attack Data ▸ Telegraph Color</strong>, on the attack's own copy (<strong>Make Unique</strong>, <a href="#ch-attacks">Attacks</a>)</td>
+</tr>
+<tr>
+<td>A disc on the ground during a wind-up</td>
+<td><strong>Attack Data ▸ Show Ground Telegraph</strong>, in the Telegraph Color, on the attack's own copy</td>
+</tr>
+<tr>
+<td>A glow while casting</td>
+<td><strong>Play Animation Action ▸ Telegraph</strong> and <strong>Effect Color</strong>, on your variant's action</td>
+</tr>
+<tr>
+<td>A tint that marks the difficulty</td>
+<td>Your own <strong>Difficulty Profile ▸ Tint</strong> and <strong>Tint Strength</strong> (<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>)</td>
+</tr>
+<tr>
+<td>The red flash of an unblockable attack, the green flash of a heal</td>
+<td>Built in</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout note">
+<p><strong>Note:</strong> The ground disc is a placeholder. It stops showing once the <strong>Windup</strong> cue of your copy of the attack has its
+own <strong>Prefab</strong>, or when your profile's <strong>Placeholders</strong> is set to <strong>Never</strong>. Give your wind-up effect its own marking on
+the ground.</p>
+</blockquote>
+<p>The flashes and tints colour the renderers listed in <strong>Enemy Animator ▸ Tint ▸ Renderers</strong>. Empty means every renderer on
+the model. Swap Model fills it with your model's renderers and leaves the weapon out.</p>
+<h2 id="ch-look-and-sound-the-awareness-icons"><span class="hnum">6.5</span> The awareness icons</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-awareness-indicator.png" alt="The Awareness Indicator: how long the &quot;!&quot; stays up, the colours of &quot;?&quot;, &quot;!&quot; and &quot;z&quot;, and the guard icon&#x27;s colours and size"><figcaption>The Awareness Indicator: how long the &quot;!&quot; stays up, the colours of &quot;?&quot;, &quot;!&quot; and &quot;z&quot;, and the guard icon&#x27;s colours and size</figcaption></figure>
+<p>The <strong>Awareness Indicator</strong> is a child of the enemy. It shows a "?" that grows as the enemy grows suspicious, a "!" when it
+becomes alert, and a "z" while it sleeps. While the enemy guards, it shows a shield that turns from blue to red as the
+guard wears down.</p>
+<ol>
+<li>Open your variant and select <strong>Awareness Indicator</strong>.</li>
+<li>Change <strong>Suspicious Color</strong>, <strong>Alert Color</strong> and <strong>Sleep Color</strong>, and <strong>Alert Show Time</strong> (how long the "!" stays up).</li>
+<li>Under <strong>Guard</strong>, change <strong>Guard Color</strong>, <strong>Guard Breaking Color</strong> and <strong>Guard Icon Size</strong>.</li>
+<li>To hide the shield, untick <strong>Show Guard Icon</strong>. To hide all the icons, untick the Awareness Indicator object.</li>
+</ol>
+<p>The icons are drawn with a Text Mesh and a shield sprite. Colours and sizes need no code; a different kind of icon, such as
+your own sprites or a marker in your game's UI, does: a subclass of Awareness Indicator, or your own UI that reads the
+enemy's <strong>Enemy Senses</strong> (the Code Extending guide's "Events for UI and game logic" chapter).</p></div>
+<div class="figrow"><figure class="figure half half"><img src="../images/guard-shield-icon.jpg" alt="The guard icon in the demo camp: a blue shield over the Heavy Melee&#x27;s head while its guard is up"><figcaption>The guard icon in the demo camp: a blue shield over the Heavy Melee&#x27;s head while its guard is up</figcaption></figure><figure class="figure half half"><img src="../images/awareness.jpg" alt="The awareness icon: a Melee Soldier&#x27;s &quot;?&quot; growing as it investigates a noise"><figcaption>The awareness icon: a Melee Soldier&#x27;s &quot;?&quot; growing as it investigates a noise</figcaption></figure></div>
+</section><section class="chapter"><h1 class="chapter" id="ch-behaviour-and-difficulty"><span class="hnum">7</span> Behaviour and difficulty</h1>
+<p>Every child of <strong>Actions</strong> is one thing the enemy can do: chase, circle, guard, attack, flee. A few times a second, the
+enemy scores each action from 0 to 1 and runs the best one. You change its behaviour by changing those scores. This
+chapter tunes an enemy you already have: it reads the scores, tunes them, changes the enemy's stats, and sets how hard it
+is.</p>
+<blockquote class="callout note">
+<p><strong>Note:</strong> <strong>Build your own mix of behaviours.</strong> To give a character behaviours from the pack's other enemies, or to
+start a new enemy from a template or recipe, see <a href="#ch-mix-and-match-behaviours">Mix and match behaviours</a>. <a href="#ch-behaviour-catalog">Behaviour catalog</a> lists every behaviour.</p>
+</blockquote>
+<h2 id="ch-behaviour-and-difficulty-how-an-enemy-decides"><span class="hnum">7.1</span> How an enemy decides</h2>
+<figure class="figure small"><img src="../images/actions-and-considerations.png" alt="One decision of a Melee Soldier: every action is scored, Flank wins because the player is facing an ally, and the loop repeats"><figcaption>One decision of a Melee Soldier: every action is scored, Flank wins because the player is facing an ally, and the loop repeats</figcaption></figure>
+<ul>
+<li>Each action has a <strong>Weight</strong> (0 to 1): the most it can ever score.</li>
+<li>Each action has a list of <strong>Considerations</strong>. Each one answers a question with a score from 0 to 1: "Is the target in
+  range?", "Am I hurt?". The action's score is its Weight times all these scores, so a single 0 stops it.</li>
+<li>The enemy runs the action with the best score. While it runs, the enemy checks the scores again every <strong>Reaction
+  Time</strong> (0.25 s at Normal). It switches if the running action is <strong>Interruptible</strong> and another scores clearly higher.</li>
+<li>Considerations are shared assets in the pack's <code>Data/Considerations</code> folder. The Manual's Archetypes chapter lists what
+  each one scores.</li>
+</ul>
+<h2 id="ch-behaviour-and-difficulty-watch-the-scores-f1"><span class="hnum">7.2</span> Watch the scores (F1)</h2>
+<ol>
+<li>Your test scene needs an <strong>AI Debug View</strong> on any object. The demo scene has one; in your own scene, use <strong>Add
+   Component</strong> and search for it.</li>
+<li>Press Play, then <strong>F1</strong>.</li>
+<li>Above each enemy: its archetype and difficulty, its awareness, the action it is running, and its three best actions
+   with their scores.</li>
+</ol>
+<figure class="figure small"><img src="../images/ai-debug-view.jpg" alt="The AI Debug View (F1) over four Melee Soldiers: the running action and the three best scores above each one; [token] marks the one allowed to attack"><figcaption>The AI Debug View (F1) over four Melee Soldiers: the running action and the three best scores above each one; [token] marks the one allowed to attack</figcaption></figure>
+<p>An action that never runs is missing from the list or scores 0. One of its considerations is holding it at 0: the
+Troubleshooting in <a href="#ch-checklist">Checklist</a> lists the usual ones.</p>
+<h2 id="ch-behaviour-and-difficulty-make-it-do-something-more-or-less"><span class="hnum">7.3</span> Make it do something more, or less</h2>
+<p>Open your variant, expand <strong>Actions</strong> and select an action. The top of its inspector says when it runs: <strong>Only when</strong>
+lists the considerations that can rule it out, and <strong>More likely when</strong> the ones that only raise or lower its score.
+Hover one to see what it asks.</p>
+<ul>
+<li><strong>Weight</strong>: raise it to make the action win more often. Lower it to make it rarer.</li>
+<li><strong>Considerations</strong>: add one to add a condition, remove one to drop it. Drag them in from <code>Data/Considerations</code>.</li>
+<li><strong>Cooldown Duration</strong>: seconds before the action can run again. On an attack it is greyed out and reads "From Attack
+  Data": press <strong>Make Unique</strong> under its <strong>Attack</strong> field, then set <strong>Cooldown</strong> in the copy instead (<a href="#ch-attacks">Attacks</a>).</li>
+<li><strong>Interruptible</strong>: lets the enemy drop the action halfway for a better one. Keep attacks uninterruptible, so they stay
+  readable.</li>
+<li><strong>To switch an action off</strong>, untick its object in the Hierarchy. The enemy ignores switched-off actions.</li>
+</ul>
+<p>Most actions have their own settings below the shared ones, such as <strong>Chase ▸ Run Speed</strong>, <strong>Circle ▸ Radius</strong> and
+<strong>Strafe Speed</strong>, or <strong>Guard ▸ Skill</strong> and <strong>Max Guard</strong>. The Manual's Archetypes chapter lists the settings worth
+changing for each enemy. <strong>Circle ▸ Radius</strong> 0 is automatic: a ring just inside the enemy's own reach, so it can attack
+straight from the circle. The line under Radius says where it circles.</p>
+<p>The inspector also warns about two mix-ups:</p>
+<ul>
+<li><strong>Two actions with the same Name</strong>, as a copy made with <strong>Ctrl+D</strong> has. F1 and the Feedback Profile's keys can't tell
+  them apart. The button under the warning, such as <strong>Rename to "Flank 2"</strong>, gives this one the next free name.</li>
+<li><strong>Two actions that always score the same</strong>: the same Weight and considerations (and, for attacks, the same Attack
+  Data). When both can run, the one listed first always wins. Change one's Weight or cooldown so they differ.</li>
+</ul>
+<blockquote class="callout tip">
+<p><strong>Tip:</strong> Two actions flicker back and forth? Raise <strong>Commitment Bonus</strong> on the root's <strong>Utility Planner</strong>: a new action
+must then beat the running one by that much before the enemy switches.</p>
+<p><strong>Tip:</strong> Some actions carry <strong>Random Variety</strong>, a consideration that scores 0.5 to 1 at random. It never rules the
+action out, but spreads it over time. Taunt has it, so the enemy taunts now and then rather than whenever it can.
+Remove it for a taunt you can predict.</p>
+</blockquote>
+<h2 id="ch-behaviour-and-difficulty-tune-a-consideration"><span class="hnum">7.4</span> Tune a consideration</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-consideration.png" alt="Behind Target Bonus, an Enemy Value consideration: the angle from the player&#x27;s front, mapped from 30° to 150° onto scores from 0.6 to 1"><figcaption>Behind Target Bonus, an Enemy Value consideration: the angle from the player&#x27;s front, mapped from 30° to 150° onto scores from 0.6 to 1</figcaption></figure>
+<p>Considerations are shared by many actions and enemies. Before you change one, give the action its own copy: press
+<strong>Make Unique</strong> next to it in the action's inspector (<a href="#ch-mix-and-match-behaviours">Mix and match behaviours</a>). On one of the pack's own prefabs it offers
+<strong>Create Variant</strong> first, and makes the copy for a variant in your folder.</p>
+<ul>
+<li><strong>Enemy Value</strong> turns a number into a score. <strong>Value</strong> picks the number: the distance to the target, health, allies
+  nearby and so on. <strong>Min</strong> and <strong>Max</strong> set its range, the <strong>Response Curve</strong> shapes it, and <strong>Min Score</strong> and <strong>Max
+  Score</strong> set the scores at each end.</li>
+<li><strong>Enemy Flag</strong> turns a yes or no into a score. <strong>Flag</strong> picks the question and <strong>Invert</strong> flips it. <strong>True Score</strong> and
+  <strong>False Score</strong> set the two scores.</li>
+<li><strong>Attack Range</strong> scores 1 inside the action's own attack range. <strong>Edge Score</strong> is its score at the edges, and <strong>Require
+  Line Of Sight</strong> is for ranged attacks.</li>
+<li><strong>Composite</strong> combines others: <strong>Any</strong> takes the best of them (an "or"), <strong>All</strong> multiplies them (an "and").</li>
+</ul>
+<p>Drag <strong>Simulated Value</strong> in a consideration's inspector to see the score it would give.</p>
+<p>The questions and numbers come from fixed lists. A new question needs code: a new kind of consideration (the Code Extending
+guide). Do not add entries to the pack's own lists: the next update replaces them.</p></div>
+<h2 id="ch-behaviour-and-difficulty-stats-health-senses-and-speed"><span class="hnum">7.5</span> Stats: health, senses and speed</h2>
+<p>Select the root of your variant:</p>
+<ul>
+<li><strong>Health</strong>: <strong>Max Health</strong>, and <strong>Max Poise</strong>, the hidden stagger meter. Each hit's poise damage lowers it; at 0 the
+  enemy is staggered.</li>
+<li><strong>Enemy Senses</strong>: <strong>Sight Range</strong>, <strong>Field Of View</strong>, <strong>Hearing Multiplier</strong>, and <strong>Awareness Gain Per Second</strong>, how fast
+  the "?" fills while it sees the player.</li>
+<li><strong>Enemy</strong>: <strong>Stagger Duration</strong>, and <strong>Knockback Multiplier</strong> (0 means it cannot be pushed).</li>
+<li><strong>Speed</strong>: each moving action has its own speed, such as <strong>Chase ▸ Run Speed</strong>. The difficulty scales them all.</li>
+</ul>
+<h2 id="ch-behaviour-and-difficulty-difficulty-profiles"><span class="hnum">7.6</span> Difficulty profiles</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/inspector-difficulty-profile.png" alt="The Hard profile: a blue tint, health, damage and speed multipliers, reaction time, awareness, dodge and guard chances, and the attack multipliers"><figcaption>The Hard profile: a blue tint, health, damage and speed multipliers, reaction time, awareness, dodge and guard chances, and the attack multipliers</figcaption></figure>
+<p>The pack's <code>Data/Difficulty</code> folder has <strong>Easy</strong>, <strong>Normal</strong>, <strong>Hard</strong> and <strong>Elite</strong>. A profile changes an enemy without
+touching its actions.</p>
+<ol>
+<li>Duplicate the closest one (<strong>Ctrl+D</strong>) into your folder, or right-click in your folder and choose <strong>Create ▸
+   TinnyStudios ▸ RPG Enemies ▸ Difficulty Profile</strong>. Don't change the pack's four: every enemy that uses them would
+   change, and the next update puts them back.</li>
+<li>Set its multipliers: health, damage, move speed, awareness, wind-up and cooldown.</li>
+<li>Set <strong>Reaction Time</strong>: how often the enemy thinks again. Lower is sharper.</li>
+<li>Set <strong>Dodge Chance</strong> and <strong>Guard Chance</strong>, <strong>Extra Combo Hits</strong> and <strong>Extra Attackers</strong> (more enemies attacking at
+   once). A group allows the most Extra Attackers that any of its members' profiles asks for.</li>
+<li>Give it a <strong>Tint</strong> and <strong>Tint Strength</strong> so players can tell the tiers apart.</li>
+<li>Drag it into your variant's <strong>Enemy ▸ Difficulty</strong>.</li>
+</ol></div>
+<blockquote class="callout note">
+<p><strong>Note:</strong> <strong>Reaction Time</strong> replaces the <strong>Reevaluate Interval</strong> on the enemy's Utility Planner when the enemy starts. To
+change how often an enemy thinks, change <strong>Reaction Time</strong> on your own profile.</p>
+</blockquote>
+<p>Switching the difficulty while the game runs, from your own menu, needs one line of code. The Manual's Quick Start chapter
+shows it.</p>
+</section><section class="chapter"><h1 class="chapter" id="ch-mix-and-match-behaviours"><span class="hnum">8</span> Mix and match behaviours</h1>
+<p>The pack's eight enemies are built from one set of parts: 45 behaviours, from dozing by the fire to a boss's phase roar.
+Any of them works on any enemy, with no code. This chapter builds your own enemy from them: browse the <strong>Behaviour
+Library</strong>, add behaviours, tune them, or start a whole new enemy with the <strong>New Enemy</strong> wizard. Four recipes show the
+process with real numbers, and a worksheet helps you plan your own. <a href="#ch-behaviour-catalog">Behaviour catalog</a> lists every behaviour. Most
+pictures show two example enemies made this way, the Orc Raider and the Orc Warchief; the inspector close-ups show My
+Soldier, the variant from the earlier chapters.</p>
+<h2 id="ch-mix-and-match-behaviours-how-mixing-works"><span class="hnum">8.1</span> How mixing works</h2>
+<p>A behaviour is one action under the enemy's <strong>Actions</strong> object, such as Flank or Heavy Charge. It carries its own
+<strong>Weight</strong>, and <strong>considerations</strong> that say when it makes sense (<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>). A few times a second,
+every behaviour on the enemy scores itself, and the highest score runs. That is the point of utility AI: there are no
+transitions to wire. A behaviour you add is one more option to score, and it already knows when it applies.</p>
+<figure class="figure"><img src="../images/custom-behaviour-mixing.png" alt="Behaviours picked from three archetypes. Each keeps its own considerations, so on your enemy it still runs at the right moment, and its Weight sets how much the enemy wants it"><figcaption>Behaviours picked from three archetypes. Each keeps its own considerations, so on your enemy it still runs at the right moment, and its Weight sets how much the enemy wants it</figcaption></figure>
+<p>So mixing comes down to two choices: which behaviours an enemy has, and how much it wants each one. The library sorts a
+behaviour's considerations into two lists:</p>
+<ul>
+<li><strong>Only when</strong>: considerations that can score 0. Any one at 0 rules the behaviour out: no target, out of range, not its
+  turn to attack.</li>
+<li><strong>More likely when</strong>: considerations that never reach 0. They raise or lower the score but never stop it. Mind their
+  low end: Heavy Charge's <strong>Guard Breaker Bonus</strong> is 1 while the player blocks and 0.5 otherwise, so most of the time the
+  charge scores about half its Weight.</li>
+</ul>
+<p>A copied behaviour brings its Weight, cooldown and settings, and uses the same considerations, Attack Data and
+projectile or minion prefab: the pack's shared assets, not copies. It takes the rest from the enemy it joins: the clips
+for its animation states, a weapon, and whatever partner, allies, props or boss phases it needs. The library's <strong>Needs</strong>
+list checks those for you.</p>
+<h2 id="ch-mix-and-match-behaviours-browse-the-behaviour-library"><span class="hnum">8.2</span> Browse the Behaviour Library</h2>
+<p>Open it from <strong>Tools ▸ TinnyStudios ▸ RPG Enemies ▸ Behaviour Library</strong>, from <strong>Add Behaviour…</strong> on an enemy's
+<strong>Enemy</strong> component, or from <strong>Library</strong> on an action's inspector, which opens it on that behaviour.</p>
+<figure class="figure"><img src="../images/custom-behaviour-library.png" alt="The Behaviour Library on Flank, aimed at the Orc Raider, a prefab in the Project window; numbered as in the list below"><figcaption>The Behaviour Library on Flank, aimed at the Orc Raider, a prefab in the Project window; numbered as in the list below</figcaption></figure>
+<ol>
+<li><strong>Search</strong> and the role filter. Search matches names, roles, descriptions, enemies and considerations: try "behind".</li>
+<li><strong>Pack 45</strong> and <strong>Yours</strong>: the pack's behaviours, and your own set-ups ("Your versions join the library", below).</li>
+<li><strong>Add to</strong>: the enemy the buttons add to. It follows your selection, and says where that enemy is and how many
+   behaviours it has. A <strong>Pack prefab</strong> chip warns when you aim at one of the pack's archetypes, and Add then asks
+   first (below).</li>
+<li>The list, by role. Each row names the enemy it comes from; "+3" means three more set-ups on other enemies. A green
+   tick means your enemy already has it.</li>
+<li>The set-ups. Click another enemy to see its version: Chase runs at 4.5 m/s on the Melee Soldier, 3.2 m/s on the Heavy
+   Melee.</li>
+<li>What it does, its <strong>Weight</strong>, <strong>Cooldown</strong>, and <strong>Interruptible</strong> or <strong>Runs to the end</strong>. Attacks add their range,
+   wind-up, damage and combo.</li>
+<li><strong>Only when</strong>, and <strong>More likely when</strong>. Hover a consideration to see what it asks and how widely it is shared; click it
+   to select the asset.</li>
+<li><strong>Pairs well with</strong>: behaviours that complete this one. Click one to jump to it. For action scripts of your own, a
+   programmer fills it with <code>[PairsWellWith]</code> (the Code Extending guide).</li>
+<li><strong>Needs</strong>, checked on the enemy in <strong>Add to</strong>. A green tick is in place. Yellow works, but borrowed or partial
+   ("ChargeWindup animation: borrows Taunt"). Red is missing: it never runs, or looks wrong ("QuickSlash1 animation: none,
+   plays Idle"). A grey note is something to set up in your level ("Allies in its group"): allies and props are only
+   counted for an enemy placed in an open scene. Click a need to highlight what fixes it.</li>
+<li><strong>Add to</strong> your enemy, and <strong>Add with its own considerations</strong> (next section).</li>
+</ol>
+<p>Action scripts of your own, written with the Code Extending guide, are listed first, under <strong>Your action types</strong>, even
+before an enemy uses them.</p>
+<h2 id="ch-mix-and-match-behaviours-add-a-behaviour-to-your-enemy"><span class="hnum">8.3</span> Add a behaviour to your enemy</h2>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-behaviour-enemy-buttons.png" alt="The top of the Enemy component: its behaviour count, Add Behaviour…, New Enemy… and Swap Model…"><figcaption>The top of the Enemy component: its behaviour count, Add Behaviour…, New Enemy… and Swap Model…</figcaption></figure>
+<ol>
+<li>Select your enemy: a variant in your own folder (<a href="#ch-start-here">Start here</a>), in the Project window, in Prefab Mode or in a
+   scene.</li>
+<li>Press <strong>Add Behaviour…</strong> at the top of its <strong>Enemy</strong> component.</li>
+<li>Pick the behaviour, and read its <strong>Needs</strong>.</li>
+<li>Press <strong>Add to</strong> your enemy. A prefab in the Project window opens in Prefab Mode first, so the change can be undone.
+   Aimed at one of the pack's own prefabs, Add asks first, "Change the pack's prefab?": <strong>Create Variant</strong>, the default,
+   saves a Prefab Variant of it in your folder, such as "My Melee Soldier", and adds the behaviour there.</li>
+<li>The new action is selected: set its <strong>Weight</strong> (next section).</li>
+<li>Save the prefab (<strong>Ctrl+S</strong> in Prefab Mode). In a scene, save the scene. <strong>Overrides ▸ Apply</strong> writes the change into
+   the prefab: use it only on an instance of your own prefab. On one of the pack's, it changes the pack's prefab, and the
+   next pack update puts it back.</li>
+</ol></div>
+<figure class="figure small"><img src="../images/custom-behaviour-added.png" alt="Right after adding Flank: the Orc Raider is open in Prefab Mode with 8 behaviours, the report asks you to save, and a second Add would make Flank 2"><figcaption>Right after adding Flank: the Orc Raider is open in Prefab Mode with 8 behaviours, the report asks you to save, and a second Add would make Flank 2</figcaption></figure>
+<p><strong>Add to</strong> copies the action under your enemy's <strong>Actions</strong>, with its settings. Its Attack Data, any projectile or minion
+prefab, and its considerations stay the same shared assets. A second copy of a behaviour is renamed, such as <strong>Flank 2</strong>.
+<strong>Ctrl+Z</strong> undoes it all. Stop Play mode first. To tune an attack you added, press <strong>Make Unique</strong> under its <strong>Attack</strong>
+field first (<a href="#ch-attacks">Attacks</a>).</p>
+<p><strong>Add with its own considerations</strong> also copies the considerations into a <strong>[Prefab] Considerations</strong> folder next to your
+prefab, named like "Low Health (Flee)". Use it when you plan to change when the behaviour runs, on this enemy only.</p>
+<p>To take a behaviour off, press <strong>Remove</strong> at the top of its inspector. To switch it off for a while, untick its object.</p>
+<h2 id="ch-mix-and-match-behaviours-make-it-yours"><span class="hnum">8.4</span> Make it yours</h2>
+<h3 id="ch-mix-and-match-behaviours-set-the-weights">Set the weights</h3>
+<p>A Weight is the most a behaviour can score, so it sets its priority. The pack's own weights make a good scale:</p>
+<table>
+<thead>
+<tr>
+<th>Weight</th>
+<th>What sits there</th>
+<th>Pack examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.2-0.25</td>
+<td>Something to do when nothing else can run</td>
+<td>Idle 0.2, Patrol 0.25</td>
+</tr>
+<tr>
+<td>0.3-0.55</td>
+<td>Moving about: closing in, waiting a turn</td>
+<td>Circle 0.3-0.5, Investigate 0.4, Chase 0.5-0.55</td>
+</tr>
+<tr>
+<td>0.45-0.7</td>
+<td>Tactics and character</td>
+<td>Taunt 0.45-0.5, Throw Barrel 0.6-0.65, Flank 0.6-0.65</td>
+</tr>
+<tr>
+<td>0.7-0.85</td>
+<td>Attacks</td>
+<td>Soldier Slash 0.75, Heavy Charge 0.8, Kick 0.85</td>
+</tr>
+<tr>
+<td>0.8-0.95</td>
+<td>Reactions that should win the moment they apply</td>
+<td>Alert Allies 0.85, Guard 0.8-0.9, Flee 0.9, Dodge 0.95</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Always first when it applies</td>
+<td>Phase Roar</td>
+</tr>
+</tbody>
+</table>
+<p>The gaps matter more than the numbers: an attack at 0.75 beats Chase at 0.55 whenever both fully apply. To make a
+behaviour win more often, raise it, or lower its rivals.</p>
+<h3 id="ch-mix-and-match-behaviours-give-it-its-own-considerations">Give it its own considerations</h3>
+<p>Consideration assets are shared: in the picture, <strong>Has Target</strong> alone is used by 89 actions on 14 prefabs. Tune one in
+place and you change them all, the pack's enemies included, and the next pack update resets it. So copy first:</p>
+<ol>
+<li>Select the action. Under its <strong>Considerations</strong>, a box says how many it shares ("4 of 4 shared with other actions"),
+   and how widely each one is used.</li>
+<li>Press <strong>Make Unique</strong> on one row, or <strong>Make Considerations Unique</strong> for all of them.</li>
+<li>The copies go to a <strong>[Prefab] Considerations</strong> folder next to your prefab, named after the action, such as "Has Target
+   (Flank)". Tune them (<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>): nothing else changes.</li>
+</ol>
+<p>On one of the pack's own prefabs, both buttons ask first, "Change the pack's prefab?": <strong>Create Variant</strong>, the default,
+saves a Prefab Variant of it in your folder and makes the copies for the same action there.</p>
+<div class="figrow"><figure class="figure half"><img src="../images/custom-behaviour-shared.png" alt="Flank&#x27;s inspector on My Soldier: 1 its role, Library, Duplicate and Remove; 2 Only when; 3 how many considerations it shares; 4 Make Unique for one; 5 for all, and where the copies go"><figcaption>Flank&#x27;s inspector on My Soldier: 1 its role, Library, Duplicate and Remove; 2 Only when; 3 how many considerations it shares; 4 Make Unique for one; 5 for all, and where the copies go</figcaption></figure><figure class="figure half"><img src="../images/custom-behaviour-unique.png" alt="After Make Considerations Unique: its own copies, named (Flank), in the Only when line too, and the report"><figcaption>After Make Considerations Unique: its own copies, named (Flank), in the Only when line too, and the report</figcaption></figure></div>
+<p>Undo points the action back at the shared assets, and leaves the copies in the folder. The same inspector row has
+<strong>Duplicate</strong>, which copies the action next to itself as "Flank 2", and <strong>Remove</strong>.</p>
+<h3 id="ch-mix-and-match-behaviours-read-the-scores-to-see-why-f1">Read the scores to see why (F1)</h3>
+<p>Put your enemy in a test scene with an <strong>AI Debug View</strong> (<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>), press Play and <strong>F1</strong>, and
+set up the moment you are testing. Above each enemy: the running action, then its three best scores.</p>
+<table>
+<thead>
+<tr>
+<th>You see</th>
+<th>It means</th>
+<th>Try</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>It scores 0, or never shows</td>
+<td>An <strong>Only when</strong> consideration is 0</td>
+<td>Read its <strong>Needs</strong>, and hover its considerations in the library</td>
+</tr>
+<tr>
+<td>It scores, but always loses</td>
+<td>Its Weight, or a <strong>More likely when</strong> at its low end</td>
+<td>Raise its Weight, or lower the winner's</td>
+</tr>
+<tr>
+<td>It wins too often</td>
+<td>Nothing holds it back</td>
+<td>Lower its Weight, lengthen its cooldown (an attack's is on its Attack Data: <strong>Make Unique</strong> first), or add an <strong>Only when</strong></td>
+</tr>
+<tr>
+<td>Two behaviours keep swapping</td>
+<td>Their scores are too close</td>
+<td>Raise <strong>Commitment Bonus</strong> on the <strong>Utility Planner</strong> (<a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout note">
+<p><strong>Note:</strong> F1's scores are close to Weight × the considerations, and a little higher for actions with several
+considerations: the maths evens them out, so asking more questions is not a penalty.</p>
+</blockquote>
+<h3 id="ch-mix-and-match-behaviours-your-versions-join-the-library">Your versions join the library</h3>
+<p>Save a tuned behaviour on one of your enemies, and it joins the library as <strong>Yours</strong>. Turn <strong>Pack</strong> off to see only
+yours, and add your tuned versions to your other enemies. Only what you changed is listed: a behaviour your variant
+inherited unchanged stays under the pack's.</p>
+<figure class="figure"><img src="../images/custom-behaviour-yours.png" alt="Pack off, Yours on: the Orc Warchief&#x27;s tuned Heavy Charge, weight 0.94, ready to add to another enemy"><figcaption>Pack off, Yours on: the Orc Warchief&#x27;s tuned Heavy Charge, weight 0.94, ready to add to another enemy</figcaption></figure>
+<h2 id="ch-mix-and-match-behaviours-start-a-new-enemy-with-the-wizard"><span class="hnum">8.5</span> Start a new enemy with the wizard</h2>
+<p>The <strong>New Enemy</strong> wizard makes a whole enemy in one window: a Prefab Variant of the enemy you start from, with the
+behaviours you pick. Open it from <strong>Tools ▸ TinnyStudios ▸ RPG Enemies ▸ New Enemy…</strong>. Or right-click a folder in the
+Project window and choose <strong>Create ▸ TinnyStudios ▸ RPG Enemies ▸ New Enemy…</strong> to save there. Or press <strong>New Enemy…</strong> on
+an enemy's <strong>Enemy</strong> component to start from that enemy. Then work down its five steps:</p>
+<ol>
+<li><strong>Start from</strong>: <strong>Templates</strong>, <strong>Recipes</strong>, <strong>Archetypes</strong> or <strong>Yours</strong>, or drop any enemy prefab in the field. Its
+   model, animations, weapon and senses come along. The Starter template is the default.</li>
+<li><strong>Name and folder</strong>. The name is also the <strong>Display Name</strong> and <strong>Archetype</strong> that F1 shows. The folder starts as the
+   last one you saved in with the pack's tools, or <code>Assets</code>; pick another with <strong>…</strong>. A folder inside the pack gets a
+   warning, since a pack update overwrites it.</li>
+<li><strong>Model</strong> (optional): your model, its <strong>Animations</strong> and <strong>Height</strong>, as in Swap Model (<a href="#ch-your-character">Your character</a>).</li>
+<li><strong>Behaviours</strong>. The start's own are ticked ("in Starter Humanoid Enemy"): untick one to leave it out. Tick any other
+   to copy it in ("from Heavy Melee"), and set its weight. Where several enemies have it, a menu picks whose version. A
+   ⚠ means something is missing or borrowed: hover it. <strong>Ticked only</strong> shows just the new enemy's list.</li>
+<li><strong>Personality</strong> (optional): two sliders, below.</li>
+</ol>
+<p>Press <strong>Create Enemy</strong>. The wizard saves a Prefab Variant of the start, selects it, and reports what it left out, added
+and changed. Its footer then shows what it made, with <strong>Open It</strong> and <strong>Make Another</strong>. Make Another keeps your choices and
+clears the name, so the next enemy gets a name of its own. As a variant, your enemy keeps receiving the pack's fixes to the
+enemy it started from.</p>
+<figure class="figure small"><img src="../images/custom-behaviour-wizard.png" alt="The New Enemy wizard making the Orc Warchief from the Starter template: Alert Allies added from the Melee Soldier, its weight after the personality sliders (→ 0.97), and Heavy Charge with a warning"><figcaption>The New Enemy wizard making the Orc Warchief from the Starter template: Alert Allies added from the Melee Soldier, its weight after the personality sliders (→ 0.97), and Heavy Charge with a warning</figcaption></figure>
+<figure class="figure small"><img src="../images/custom-behaviour-personality.png" alt="Step 5 on the Orc Warchief: the weights it changes (→), a version picked from the Melee Soldier, the two sliders, and the footer after Create Enemy with Open It, Make Another and the report"><figcaption>Step 5 on the Orc Warchief: the weights it changes (→), a version picked from the Melee Soldier, the two sliders, and the footer after Create Enemy with Open It, Make Another and the report</figcaption></figure>
+<p>The personality sliders only multiply weights, by up to 35% at either end; <strong>→</strong> in the list shows each result. In the
+picture, Aggressive about halfway takes Guard from 0.85 to 0.7.</p>
+<ul>
+<li><strong>Aggressive</strong> raises attacks, Chase, Throw Barrel and taunts, and lowers Guard, Dodge, Take Cover, Flee, Back Off,
+  Keep Distance and Teleport. <strong>Cautious</strong> does the opposite.</li>
+<li><strong>Team player</strong> raises Alert Allies, Circle, Flank, Heal Ally and Summon Swarm. <strong>Loner</strong> lowers them.</li>
+</ul>
+<blockquote class="callout tip">
+<p><strong>Tip:</strong> The ⚠ checks the enemy you start from. If you gave the new enemy your own animations, check its behaviours
+in the library again once it is made.</p>
+</blockquote>
+<h2 id="ch-mix-and-match-behaviours-the-starter-template"><span class="hnum">8.6</span> The Starter template</h2>
+<p><code>Prefabs/Templates/Starter Humanoid Enemy</code> is the wizard's default start: a variant of the Melee Soldier with one
+behaviour for each moment of a fight, and nothing else. It keeps the Grunt model, a full set of humanoid clips, the
+Cleaver and the sample sounds, and it receives pack updates. Its seven behaviours:</p>
+<ul>
+<li><strong>Idle</strong> (0.2) and <strong>Patrol</strong> (0.25) before the fight. Patrol needs waypoints from your level, or it never runs.</li>
+<li><strong>Investigate</strong> (0.4) for a noise or a glimpse: the "?".</li>
+<li><strong>Chase</strong> (0.55) to close in, and <strong>Soldier Slash</strong> (0.75), its one attack.</li>
+<li><strong>Circle</strong> (0.45) while another enemy holds the attack token. Without it, enemies waiting their turn have nothing to
+  do and stand still; with it, a group sizes the player up.</li>
+<li><strong>Flee</strong> (0.9) to get away when badly hurt and alone.</li>
+</ul>
+<p>Its Circle keeps the Melee Soldier's automatic ring (<strong>Radius</strong> 0): just inside its own reach, 2.1 m with Soldier
+Slash's 2.4 m, so it can swing straight from the circle. Give an enemy made from it another attack and the ring follows.
+A fixed ring wider than its reach would leave a lone Starter circling a player who stands still, never swinging ("It
+circles outside its reach", below).</p>
+<p>One setting differs from the Melee Soldier: <strong>weapon drops are off</strong>. <strong>Drop Weapon When Parried</strong> is unticked and <strong>Drop
+Weapon Chance On Stagger</strong> is 0, because its one attack needs its weapon and it cannot fight unarmed. For a disarmable
+enemy, make one from the Starter with <strong>New Enemy…</strong>, tick <strong>Pick Up Weapon</strong> and <strong>Soldier Punch</strong> in its
+<strong>Behaviours</strong> step, then tick <strong>Drop Weapon When Parried</strong> again on the new enemy. Change your enemies, not the
+template: it is one of the pack's prefabs, and an update puts it back.</p>
+<h2 id="ch-mix-and-match-behaviours-four-recipes"><span class="hnum">8.7</span> Four recipes</h2>
+<p>The four enemies in <code>Prefabs/Recipes</code> were made only by mixing: a variant of one archetype, some behaviours left out,
+one copied in from another, and new weights. No code, no new considerations or attacks. To build on one, pick it under
+<strong>Recipes</strong> in the wizard.</p>
+<h3 id="ch-mix-and-match-behaviours-assassin">Assassin</h3>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-behaviour-assassin.jpg" alt="The Assassin while the player faces it: Flank 0.74 beats Quick Slash 0.67, so it runs for the player&#x27;s back"><figcaption>The Assassin while the player faces it: Flank 0.74 beats Quick Slash 0.67, so it runs for the player&#x27;s back</figcaption></figure>
+<p><em>Slips behind you while you face it, strikes from behind, dodges your swings, and backs off into cover when hurt.</em></p>
+<p><strong>Made from</strong> the Agile Melee, without Guard and Taunt, plus the Archer's Take Cover. <strong>Weights:</strong> Flank 0.65 → 0.9,
+Quick Slash 0.75 → 0.85, Lunge 0.8 → 0.5, Circle 0.5 → 0.35.</p>
+<p><strong>In Play mode</strong>, facing the player, F1 showed Flank 0.74 beating Quick Slash 0.67. From behind, Quick Slash scored
+0.81, against 0.63 from the front: its <strong>Behind Target Bonus</strong> at work. It still dodged swings. Its <strong>Needs</strong> warn that
+Take Cover wants walls, pillars or rocks: in the open, it gives up at once.</p></div>
+<h3 id="ch-mix-and-match-behaviours-berserker">Berserker</h3>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-behaviour-berserker.jpg" alt="The Berserker charging on sight: Heavy Charge 0.67 against Chase 0.51"><figcaption>The Berserker charging on sight: Heavy Charge 0.67 against Chase 0.51</figcaption></figure>
+<p><em>Never guards and never runs: it charges in from range, slashes and punches hard, hurls barrels and pounds its chest.</em></p>
+<p><strong>Made from</strong> the Melee Soldier, without Guard, Flee, Flank and Alert Allies, plus the Heavy Melee's Heavy Charge
+(its wind-up borrows the Grunt's chest-pounding Taunt clip, which suits it). <strong>Weights:</strong> Heavy Charge 0.8 → 1, Soldier
+Slash 0.75 → 0.9, Soldier Punch 0.7 → 0.85, Pick Up Weapon 0.8 → 0.9, Taunt 0.5 → 0.6, Chase 0.55 → 0.6, Circle 0.45 →
+0.25.</p></div>
+<blockquote class="callout tip">
+<p><strong>Tip:</strong> <strong>Read the scores.</strong> The first Berserker never charged: F1 showed Chase winning every time. The library showed
+why: Heavy Charge's <strong>More likely when</strong> holds <strong>Guard Breaker Bonus</strong>, 1 while the player blocks and 0.5 otherwise.
+Against a player not blocking, the charge at 0.9 scored about 0.6 and lost to Chase at 0.7. With the charge at 1 and
+Chase at 0.6, it charged on sight: 0.67 against Chase's 0.51.</p>
+</blockquote>
+<h3 id="ch-mix-and-match-behaviours-sniper">Sniper</h3>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-behaviour-sniper.jpg" alt="The Sniper backing off as the player closes in: Back Off 0.52"><figcaption>The Sniper backing off as the player closes in: Back Off 0.52</figcaption></figure>
+<p><em>A marksman that keeps its distance and backs away when you close in.</em></p>
+<p><strong>Made from</strong> the Archer, without Triple Shot and Kick, plus the Melee Soldier's Flee. <strong>Weights:</strong> Back Off 0.8 →
+0.95, Arrow Shot 0.75 → 0.85, Find Clear Shot 0.7 → 0.8, Seek High Ground 0.4 → 0.75.</p>
+<p><strong>In Play mode</strong>, Arrow Shot scored 0.85 at 13 m. Close in and it backs away, Back Off scoring 0.52 to 0.84, higher the
+nearer you get: with no Kick, it cannot fight up close. When it is losing, Flee sends it to a hidden spot.</p></div>
+<h3 id="ch-mix-and-match-behaviours-medic">Medic</h3>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-behaviour-medic.jpg" alt="The Medic healing an unaware soldier: Heal Ally 0.95, and the soldier&#x27;s low health bar"><figcaption>The Medic healing an unaware soldier: Heal Ally 0.95, and the soldier&#x27;s low health bar</figcaption></figure>
+<p><em>Heals the wounded, raises the alarm, and keeps out of reach.</em></p>
+<p><strong>Made from</strong> the Mage, without Fire Circle, Summon Swarm and Teleport, plus the Melee Soldier's Alert Allies.
+<strong>Weights:</strong> Heal Ally 0.85 → 0.95, Keep Distance 0.6 → 0.8, Fireball 0.7 → 0.45, Find Clear Shot 0.5 → 0.4.</p>
+<p><strong>In Play mode</strong>, it woke two unaware soldiers with its alarm, and healed one from 33% to 92% health, Heal Ally scoring
+0.95. It only needs an ally within 12 m under 60% health, so it heals even before it notices the player.</p></div>
+<h2 id="ch-mix-and-match-behaviours-common-gotchas"><span class="hnum">8.8</span> Common gotchas</h2>
+<h3 id="ch-mix-and-match-behaviours-it-needs-a-partner-a-prop-or-allies">It needs a partner, a prop or allies</h3>
+<p>Some behaviours only work with something else on the enemy or in your level. The <strong>Needs</strong> list names it.</p>
+<table>
+<thead>
+<tr>
+<th>Behaviour</th>
+<th>Needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hide, Emerge</td>
+<td>Each other. Without Emerge, it hides and never comes back up</td>
+</tr>
+<tr>
+<td>Flank, Alert Allies, Heal Ally</td>
+<td>Allies in its group: children of the same <strong>Group Coordinator</strong>, or every enemy without one</td>
+</tr>
+<tr>
+<td>Throw Barrel</td>
+<td>Throwables in the level (a <strong>Throwable</strong> component), such as <code>Demo/Prefabs/Explosive Barrel</code></td>
+</tr>
+<tr>
+<td>Pick Up Weapon</td>
+<td>Dropped weapons or a <strong>Weapon Rack</strong> within reach, and a hand to hold them (<strong>Weapon Socket</strong>)</td>
+</tr>
+<tr>
+<td>Take Cover, Flee</td>
+<td>Walls, pillars or rocks. In the open, Take Cover gives up at once and Flee just runs</td>
+</tr>
+<tr>
+<td>Patrol</td>
+<td>Waypoints, set on the enemy once it is placed in your level</td>
+</tr>
+<tr>
+<td>Phase Roar, Fire Ring</td>
+<td>Boss phases: <strong>Enemy ▸ Phase Thresholds</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Pick Up Weapon, Throw Barrel, Guard and Take Cover were made for enemies on foot, and warn on a flyer.</p>
+<h3 id="ch-mix-and-match-behaviours-it-lacks-an-animation-so-it-plays-another">It lacks an animation, so it plays another</h3>
+<div class="float-group"><figure class="figure side"><img src="../images/custom-behaviour-needs.png" alt="Quick Slash checked on the Orc Raider: its Grunt model has no QuickSlash clips, so all three hits would play Idle"><figcaption>Quick Slash checked on the Orc Raider: its Grunt model has no QuickSlash clips, so all three hits would play Idle</figcaption></figure>
+<p>Behaviours play Animator states by name, such as QuickSlash1, and your enemy plays its own clip for each state. Without
+one, it falls back: to a similar clip (yellow, "borrows Taunt"), or to Idle (red, "none, plays Idle"). An attack on
+Idle looks like an enemy that hurts you while standing still.</p>
+<p>To fix it, open your enemy's <strong>Enemy Animator ▸ Clip Mapping</strong>, press <strong>Make Unique</strong>, and drop a clip on each state the
+list names (<a href="#ch-animations">Animations</a>). Any Humanoid clip works, the pack's included: the Agile Melee's slashes are
+<code>Models/04_Duelist/Duelist_Anim_QuickSlash1</code> to <code>3</code>.</p></div>
+<h3 id="ch-mix-and-match-behaviours-it-circles-outside-its-reach">It circles outside its reach</h3>
+<p>Circle keeps an enemy on a ring around the player while another enemy holds the attack token. With <strong>Radius</strong> 0, the
+ring sits just inside the enemy's own reach, and follows its attacks and weapon. A fixed Radius wider than every attack's
+reach leaves <strong>In Attack Range</strong> at 0, so a lone enemy facing a player who stands still circles forever. Under
+<strong>Radius</strong>, Circle's inspector says whether it can attack from its ring: if not, set Radius to 0. A wider fixed ring
+suits an enemy with a long-range move, such as the Agile Melee's Lunge (2.5-6 m).</p>
+<h3 id="ch-mix-and-match-behaviours-two-actions-share-a-name">Two actions share a Name</h3>
+<p>F1 then lists both under one name, a Feedback Profile row keyed by that name plays for both, and the library cannot tell
+them apart. <strong>Add to</strong> and <strong>Duplicate</strong> rename the copy (<strong>Flank 2</strong>), but <strong>Ctrl+D</strong> in the Hierarchy keeps the
+original's <strong>Name</strong>. The action's inspector then warns, with a button to rename it (<strong>Rename to "Flank 2"</strong>).</p>
+<h3 id="ch-mix-and-match-behaviours-a-shared-consideration-changed-every-enemy">A shared consideration changed every enemy</h3>
+<p>A consideration asset is shared by every action that uses it, on every enemy, and the next pack update resets it. Before
+you tune one, press <strong>Make Unique</strong>, or add the behaviour with its own considerations.</p>
+<h2 id="ch-mix-and-match-behaviours-design-your-own-a-worksheet"><span class="hnum">8.9</span> Design your own: a worksheet</h2>
+<p>Plan an enemy before you open the wizard: pick one or more per row. The example is the Orc Warchief from the pictures,
+and the catalog (<a href="#ch-behaviour-catalog">Behaviour catalog</a>) has the details of every behaviour.</p>
+<table class="worksheet">
+<colgroup><col style="width:16%"><col style="width:42%"><col style="width:21%"><col style="width:21%"></colgroup>
+<thead><tr><th>Step</th><th>Pick from</th><th>Example: Orc Warchief</th><th>Your enemy</th></tr></thead>
+<tbody>
+<tr><td><b>1. Its job</b></td><td>Front line: Starter, Melee Soldier · duelist: Agile Melee · bruiser: Heavy Melee · ranged: Archer · caster or healer: Mage · flyer: Swarm · turret: Pop-up Shooter · set piece: Boss</td><td>A front-line leader: the Starter</td><td></td></tr>
+<tr><td><b>2. Before the fight</b></td><td>Idle, Patrol, Investigate · Alert Allies to raise the alarm</td><td>Idle, Investigate, Alert Allies</td><td></td></tr>
+<tr><td><b>3. The way in</b></td><td>Chase · Find Clear Shot, Seek High Ground · Teleport · a charge</td><td>Chase, and Heavy Charge from range</td><td></td></tr>
+<tr><td><b>4. Waiting its turn</b></td><td>Circle, for any melee enemy in a group · Flank · Taunt, Beat Chest · Throw Barrel</td><td>Circle, Flank, Throw Barrel</td><td></td></tr>
+<tr><td><b>5. Attacks</b></td><td>One to three from Melee attacks, or Ranged and area attacks</td><td>Soldier Slash, Heavy Charge</td><td></td></tr>
+<tr><td><b>6. Defence</b></td><td>Guard · Dodge · Back Off, Keep Distance</td><td>Guard</td><td></td></tr>
+<tr><td><b>7. The way out</b></td><td>Flee · Take Cover · Hide and Emerge · none, for a berserker</td><td>Flee</td><td></td></tr>
+<tr><td><b>8. Team work</b></td><td>Alert Allies · Heal Ally · Summon Swarm · Pick Up Weapon, for itself</td><td>Alert Allies</td><td></td></tr>
+<tr><td><b>9. Personality</b></td><td>Cautious ↔ Aggressive · Loner ↔ Team player</td><td>Aggressive about halfway, Team player a little less</td><td></td></tr>
+</tbody>
+</table>
+<p>Then check it: no red <strong>Needs</strong> in the library, and the yellow ones look right; Circle able to attack from its ring
+(its inspector says so); its partners and props in your level. Last, press Play and <strong>F1</strong>: each behaviour should win at least once, in
+the moment it is for.</p>
+</section><section class="chapter"><h1 class="chapter" id="ch-checklist"><span class="hnum">9</span> Checklist</h1>
+<p>A fifteen-minute run through everything in this guide, then the problems people meet most, and short answers to common
+questions.</p>
+<h2 id="ch-checklist-make-an-enemy-your-own-in-15-minutes"><span class="hnum">9.1</span> Make an enemy your own in 15 minutes</h2>
+<table>
+<thead>
+<tr>
+<th>Minutes</th>
+<th>Step</th>
+<th>Chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Select a pack enemy and press <strong>Swap Model…</strong> on its <strong>Enemy</strong> component. Set <strong>New Model</strong> and <strong>Height</strong>, press <strong>Create Variant</strong>, and save it in your own folder.</td>
+<td><a href="#ch-your-character">Your character</a></td>
+</tr>
+<tr>
+<td>1</td>
+<td>Open the variant. In <strong>Enemy ▸ Replace Weapon</strong>, give it a weapon, or first make one from your model (<strong>Create ▸ TinnyStudios ▸ RPG Enemies ▸ Weapon From Selected Model</strong>).</td>
+<td><a href="#ch-weapons">Weapons</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Press <strong>Select Weapon</strong>. In <strong>Check Through An Animation</strong>, press <strong>Pose</strong> on an attack and scrub it. Fix the grip with <strong>Edit Grip</strong> or <strong>Flip</strong>.</td>
+<td><a href="#ch-weapons">Weapons</a></td>
+</tr>
+<tr>
+<td>1</td>
+<td>Set the weapon's <strong>Length (m)</strong>, with <strong>Adjust Reach</strong> ticked.</td>
+<td><a href="#ch-weapons">Weapons</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>In <strong>Enemy Animator ▸ Clip Mapping</strong>, press <strong>Make Unique</strong>. Drop your clips on the states you want, and press ▶ to check them.</td>
+<td><a href="#ch-animations">Animations</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Select an attack under <strong>Actions</strong> and press <strong>Make Unique</strong> under its <strong>Attack</strong> field. Set the copy's damage, range, <strong>Telegraph Color</strong> and <strong>Animation State</strong>.</td>
+<td><a href="#ch-attacks">Attacks</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Press <strong>Make Unique</strong> next to the <strong>Feedback Emitter</strong>'s <strong>Profile</strong>, add Hurt and Died with <strong>+</strong>, and drop in hurt, death and swing sounds.</td>
+<td><a href="#ch-look-and-sound">Look and sound</a></td>
+</tr>
+<tr>
+<td>1</td>
+<td>Change the <strong>Awareness Indicator</strong>'s colours to match your game.</td>
+<td><a href="#ch-look-and-sound">Look and sound</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Put the variant in a test scene with a NavMesh and your player. Press Play and <strong>F1</strong>, and watch it decide.</td>
+<td><a href="#ch-behaviour-and-difficulty">Behaviour and difficulty</a></td>
+</tr>
+</tbody>
+</table>
+<p>Your player needs a <strong>Simple Combat Target</strong> (it adds a <strong>Health</strong> on the Player team) and a collider. The Manual's Quick
+Start chapter covers it. On URP, convert the pack's materials with <strong>Tools ▸ TinnyStudios ▸ RPG Enemies ▸ Render
+Pipeline ▸ Convert Materials To URP</strong> (the Manual's Render Pipelines chapter), and again after every pack update, which
+brings back the Built-in materials. The pack offers it on the next load.</p>
+<h2 id="ch-checklist-troubleshooting"><span class="hnum">9.2</span> Troubleshooting</h2>
+<h3 id="ch-checklist-the-weapon-is-in-the-wrong-place-after-a-pick-up">The weapon is in the wrong place after a pick-up</h3>
+<ul>
+<li>A weapon always goes to its own <strong>Held Position</strong> and <strong>Held Rotation</strong>, when the game starts and at every pick-up. Moving
+  its transform by hand does not last. Use <strong>Edit Grip</strong>, or press <strong>Use Current Transform</strong> to keep a hand-made move.</li>
+<li>The grip belongs to the weapon, not to the character. A weapon lying in your scene is picked up with its own grip: set the
+  grip on that weapon's prefab. For one of the pack's weapons, make a Prefab Variant of it in your folder, set the grip
+  there, and place the variant (<a href="#ch-weapons">Weapons</a>).</li>
+<li>Check the grip through an attack, not only at rest (<strong>Check Through An Animation</strong>).</li>
+<li>Held by the blade? Press <strong>Flip</strong>.</li>
+</ul>
+<h3 id="ch-checklist-the-character-slides-or-floats">The character slides or floats</h3>
+<ul>
+<li><strong>Feet slide</strong> while walking or running: press <strong>Measure Stride Speeds</strong> on the Enemy Animator. Do it again after you
+  change the model's size or its walk and run clips.</li>
+<li><strong>Floats or sinks</strong> in one state: Measure Stride Speeds also fills <strong>Ground Offsets</strong>. For your own clips, <strong>Ground Clips</strong>
+  fixes their import height.</li>
+<li><strong>Floats everywhere</strong>: check that <strong>Snap To Ground</strong> is ticked on the Enemy Animator (off only for flyers), and that
+  the NavMesh sits on the floor.</li>
+<li>After a Swap Model, check the <strong>Height</strong> you gave.</li>
+</ul>
+<h3 id="ch-checklist-a-new-attack-never-happens">A new attack never happens</h3>
+<p>Press Play and <strong>F1</strong>, then find the attack in the enemy's scores. It scores 0 when one of its considerations is 0:</p>
+<ul>
+<li><strong>In Attack Range</strong> is 0: the target is outside <strong>Min Range</strong> to <strong>Max Range</strong>. Check that <strong>Max Range</strong> reaches past the
+  distance where <strong>Chase</strong> stops (<strong>Chase ▸ Engage Distance</strong>).</li>
+<li><strong>Can Take Attack Token</strong> is 0: other enemies hold the attack tokens. The <strong>Group Coordinator</strong> sets how many attack at
+  once.</li>
+<li><strong>Has Weapon</strong> is 0: the enemy is unarmed. Remove the consideration for an unarmed move.</li>
+<li>It never wins: its <strong>Weight</strong> is lower than the actions around it. Raise it, and give the others a reason to lose.</li>
+<li>The action is switched off, or its <strong>Attack</strong> field is empty.</li>
+</ul>
+<p>It runs but looks wrong? The attack's <strong>Animation State</strong> names a state this character has no clip for, so it plays a
+fallback. Check the Clip Mapping (<a href="#ch-animations">Animations</a>).</p>
+<h3 id="ch-checklist-a-behaviour-i-added-never-runs">A behaviour I added never runs</h3>
+<ul>
+<li>Select it under <strong>Actions</strong> and press <strong>Library</strong> at the top of its inspector. A red line in its <strong>Needs</strong> names what is
+  missing: a clip, a weapon, a partner, allies or props (<a href="#ch-mix-and-match-behaviours">Mix and match behaviours</a>).</li>
+<li>Press Play and <strong>F1</strong>. At 0, one of its <strong>Only when</strong> considerations is 0. Scoring but never winning, it needs a higher
+  Weight, or its rivals lower ones.</li>
+<li>A melee enemy that circles and never swings: its Circle's <strong>Radius</strong> is wider than its attack's reach. Set it to 0 for
+  a ring just inside its reach.</li>
+</ul>
+<h3 id="ch-checklist-my-variant-changed-the-originals-animations">My variant changed the original's animations</h3>
+<p>A variant shares its original's Override Controller until you press <strong>Make Unique</strong>. A clip dropped on a shared
+controller asks first; after <strong>Change it for all</strong>, it went into the original's controller too.</p>
+<ol>
+<li>Put the original clips back. Right away, undo (<strong>Ctrl+Z</strong>). Later, when the original is one of the pack's characters,
+   don't drop clips back into its controller by hand: import the pack's own copy again. In <strong>Window ▸ Package Manager ▸
+   My Assets</strong>, select RPG Enemies, press <strong>Import</strong>, and tick only that controller (for the Melee Soldier,
+   <code>Models/01_CampGrunt/Grunt.overrideController</code>). Or restore the file from version control.</li>
+<li>Open your variant and press <strong>Make Unique</strong>.</li>
+<li>Make your change again. It now stays on your variant.</li>
+</ol>
+<h3 id="ch-checklist-generic-rigs">Generic rigs</h3>
+<ul>
+<li><strong>Keep Current</strong> does not work: give the model its own clips (<strong>Override Controller</strong> or <strong>Clips Folder</strong>).</li>
+<li>Weapons need a socket in the hand: set <strong>Enemy ▸ Weapon Socket</strong> to a child of the hand bone, then <strong>Replace Weapon</strong>.</li>
+<li>No guard pose; the guard still blocks.</li>
+<li>Type the <strong>Locomotion Clip Speeds</strong> and <strong>Hit Markers</strong> in by hand.</li>
+</ul>
+<p>See "Generic rigs" in <a href="#ch-your-character">Your character</a>.</p>
+<h2 id="ch-checklist-questions"><span class="hnum">9.3</span> Questions</h2>
+<p><strong>Can I edit the pack's prefabs and assets directly?</strong> You can, but the next pack update replaces them. Work on Prefab
+Variants and on copies in your own folder. The tools help: one that would change one of the pack's prefabs asks first
+and offers <strong>Create Variant</strong>, and <strong>Make Unique</strong> gives your enemy its own clips, Attack Data, considerations or
+Feedback Profile.</p>
+<p><strong>Can I give an enemy another enemy's behaviour, such as the Archer's Take Cover?</strong> Yes, with no code: press <strong>Add
+Behaviour…</strong> on its <strong>Enemy</strong> component. To make a new enemy from several, use <strong>Tools ▸ TinnyStudios ▸ RPG Enemies ▸
+New Enemy…</strong> (<a href="#ch-mix-and-match-behaviours">Mix and match behaviours</a>).</p>
+<p><strong>Where do the tools save what they make?</strong> Next to what you are working on, and never in the pack's folders by
+default. <strong>Create Variant</strong> and the Feedback Emitter's <strong>Create</strong> ask you, starting next to your prefab. <strong>Make Unique</strong>
+saves next to your prefab: the clips as "My Soldier.overrideController", a profile as "My Soldier Feedback", Attack Data
+as "My Soldier Slash". A consideration's <strong>Make Unique</strong> saves in a "[Prefab] Considerations" folder next to it.
+<strong>Create Weapon From Model</strong> saves next to your model. <strong>Add State…</strong> keeps your animation states in an Extra Animator
+States asset next to your prefab. The variant the "Change the pack's prefab?" question makes is suggested as "My Melee
+Soldier" in your folder. When a place would be inside the pack, as for one of the pack's own prefabs or models, a tool
+asks you or uses your own folder instead: the last one you saved in with the pack's tools, or <code>Assets</code>. The folder tool
+asks "Save in the pack's folder?" for clips inside the pack. The New Enemy wizard saves in the folder you give it, and
+suggests the same: the last folder you saved in with the pack's tools, or <code>Assets</code>.</p>
+<p><strong>Does the weapon's Damage Multiplier count on an enemy?</strong> Yes, for its melee attacks, relative to the weapon it starts
+with. With its own weapon it hits as its Attack Data say; a heavier weapon it picks up hits harder. Its <strong>Reach Bonus</strong>
+counts as it is.</p>
+<p><strong>Can two enemies share an attack but play different animations?</strong> Yes. <strong>Animation State</strong> names a state, and each
+character's Clip Mapping decides which clip plays for it.</p>
+<p><strong>How many new moves can I add without code?</strong> As many as you like. Each character has six spare slots, <strong>Custom1</strong> to
+<strong>Custom6</strong>, and <strong>Add State…</strong> in the Clip Mapping adds named states of your own, such as ShieldBash, for every
+character (<a href="#ch-animations">Animations</a>). An Attack Data or a Play Animation Action plays them. Only a new kind of action needs
+code (the Code Extending guide).</p>
+<p><strong>Can I change the look of the "?" and "!" icons?</strong> Their colours and sizes, yes. A different kind of icon needs code: a
+subclass of Awareness Indicator, or your own UI reading Enemy Senses (the Code Extending guide).</p>
+<p><strong>Can the same weapon fit a small and a large character?</strong> Yes. Its grip is measured from the fist, and every hand socket
+follows the same rule, so it sits the same way in every hand. Its size stays its own; use <strong>Length (m)</strong> to change it.</p>
+<p><strong>Can I pool enemies?</strong> Not yet. A dead enemy shuts its AI down and is destroyed, and an enemy sets itself up only once,
+so it cannot be reused.</p>
+</section><section class="chapter"><h1 class="chapter" id="ch-behaviour-catalog"><span class="hnum">10</span> Behaviour catalog</h1>
+<!-- Laid out from the Behaviour Library's catalog export (Tools > TinnyStudios > RPG Enemies > Dev > Export Behaviour Catalog) by catalog_appendix.py. Export again and re-run it rather than editing by hand. -->
+
+
+<p>Every behaviour on the pack's eight enemies, grouped by role as the Behaviour Library shows them (<a href="#ch-mix-and-match-behaviours">Mix and match behaviours</a>).
+Each row is one behaviour:</p>
+<ul>
+<li><strong>Behaviour</strong>: its name, whether it runs to the end or can be interrupted, and its cooldown (a range when the enemies
+  differ).</li>
+<li><strong>What it does</strong>, with an attack's numbers, and the behaviours it pairs well with.</li>
+<li><strong>Only when</strong>: the considerations that can score 0, so any one at 0 rules it out. <strong>More likely</strong> lists the ones that
+  only raise or lower its score.</li>
+<li><strong>Needs</strong>: what it relies on. The library checks these against your enemy.</li>
+<li><strong>On</strong>: the enemies that have it, and its Weight on each.</li>
+</ul>
+<p>Where several enemies have a behaviour, the first one's set-up is described. The others can differ in their settings:
+open the library to compare them.</p>
+<p>45 behaviours, 73 set-ups on 8 enemies.</p>
+<h2 id="ch-behaviour-catalog-idle-and-patrol"><span class="hnum">10.1</span> Idle and patrol</h2>
+<p>What it does before it has noticed anyone.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Idle</b><br><i>Interruptible</i></td><td>While unaware, it sits at a free seat or bed near home (an Idle Spot), or wanders within 4 m of home. Asleep in a bed, it is much slower to notice the player.<br>Pairs with Patrol, Investigate.</td><td>Is Unaware</td><td>SitIdle, SleepIdle animations<br>Idle Spots in the level (optional)</td><td>All eight enemies: 0.2</td></tr>
+<tr><td><b>Patrol</b><br><i>Interruptible</i></td><td>While unaware, it walks between its Waypoints and waits 2 s at each. Waypoints are objects in your level, so assign them on the enemy once it is placed; with none it never runs.<br>Pairs with Idle, Investigate.</td><td>Is Unaware</td><td>Waypoints: assign them in your level</td><td>Melee Soldier: 0.25</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-awareness-and-alarms"><span class="hnum">10.2</span> Awareness and alarms</h2>
+<p>Checking out noises and sightings, and raising the alarm.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Investigate</b><br><i>Interruptible</i></td><td>When it has seen or heard something, it stops for a moment (the "?"), walks to the spot and looks around for 3 s. If it finds nothing it calms down.<br>Pairs with Idle, Alert Allies, Chase.</td><td>Is Suspicious<br>Has Last Known Position</td><td>Alert animation</td><td>Melee Soldier, Heavy Melee, Agile Melee, Mage, Swarm: 0.4</td></tr>
+<tr><td><b>Alert Allies</b><br><i>Runs to the end</i><br><i>Cooldown 20 s</i></td><td>When it spots the player before its allies do, it sounds the alarm for 1.2 s: its whole group turns alert and other enemies within 25 m become suspicious. Breaking its line of sight stops the alarm.<br>Pairs with Investigate, Flank, Circle.</td><td>Is Alert<br>Allies Unaware</td><td>BlowHorn animation<br>Allies in its group</td><td>Melee Soldier, Archer: 0.85</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-chase-and-positioning"><span class="hnum">10.3</span> Chase and positioning</h2>
+<p>Getting to the player, or to a better spot to fight from.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Chase</b><br><i>Interruptible</i></td><td>Runs at the player (4.5 m/s) until it is within 1.9 m, heading for its own spot around them so a group spreads out instead of stacking up.<br>Pairs with Circle, any melee attack.</td><td>Has Target<br><b>More likely:</b> Far From Target</td><td>Nothing special</td><td>Melee Soldier, Heavy Melee, Agile Melee, Swarm: 0.55<br>Boss: 0.5</td></tr>
+<tr><td><b>Find Clear Shot</b><br><i>Interruptible</i><br><i>Cooldown 3-5 s</i></td><td>Moves to a spot 8-16 m from the player with a clear line of sight to them, preferring high ground.<br>Pairs with any ranged attack, Take Cover.</td><td>Has Target<br>Cannot See Target</td><td>Nothing special</td><td>Archer: 0.7<br>Mage: 0.5</td></tr>
+<tr><td><b>Seek High Ground</b><br><i>Interruptible</i><br><i>Cooldown 8 s</i></td><td>Moves to a spot 9-18 m from the player with a clear line of sight to them, preferring high ground.<br>Pairs with any ranged attack, Take Cover.</td><td>Has Target<br><b>More likely:</b> Random Variety</td><td>Nothing special</td><td>Archer: 0.4</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-melee-attacks"><span class="hnum">10.4</span> Melee attacks</h2>
+<p>Close-range attacks and charges. Each plays an Attack Data asset.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Soldier Slash</b><br><i>Runs to the end</i><br><i>Cooldown 2.2 s</i></td><td>A two-hit weapon combo at close range.<br><i>Melee · 0-2.4 m · wind-up 0.55 s · 12 damage · combo into Soldier Slash 2 (70%) · waits for an attack token</i><br>Pairs with Flank, Circle, Guard.</td><td>Has Target<br>Has Weapon<br>In Attack Range<br>Can Take Attack Token<br><b>More likely:</b> Behind Target Bonus</td><td>Slash1, Slash2 animations<br>A weapon in hand</td><td>Melee Soldier: 0.75</td></tr>
+<tr><td><b>Soldier Punch</b><br><i>Runs to the end</i><br><i>Cooldown 1.8 s</i></td><td>A weak punch, for when it has lost its weapon.<br><i>Melee · 0-2 m · wind-up 0.45 s · 6 damage · waits for an attack token</i><br>Pairs with Pick Up Weapon, Soldier Slash.</td><td>Has Target<br>Has No Weapon<br>In Attack Range<br>Can Take Attack Token</td><td>Punch animation<br>Runs once it has lost its weapon</td><td>Melee Soldier: 0.7<br>Agile Melee: 0.65</td></tr>
+<tr><td><b>Heavy Smash</b><br><i>Runs to the end</i><br><i>Cooldown 3 s</i></td><td>A slow, huge overhead smash. Blockable, but it drains most of a guard.<br><i>Melee · 0-2.5 m · wind-up 1 s · 30 damage · waits for an attack token</i><br>Pairs with Ground Slam, Guard, Pick Up Weapon.</td><td>Has Target<br>Has Weapon<br>In Attack Range<br>Can Take Attack Token</td><td>HeavySmash animation<br>A weapon in hand</td><td>Heavy Melee: 0.75</td></tr>
+<tr><td><b>Heavy Charge</b><br><i>Runs to the end</i><br><i>Cooldown 7 s</i></td><td>Winds up, then rushes past the player, hitting anything in the way. Sidestep it.<br><i>Charge · 6-14 m · wind-up 0.9 s · 25 damage · unblockable · waits for an attack token</i><br>Pairs with Chase, Beat Chest.</td><td>Has Target<br>In Attack Range<br>Can See Target<br>Can Take Attack Token<br><b>More likely:</b> Guard Breaker Bonus</td><td>ChargeWindup, ChargeRun, ChargeRecover animations</td><td>Heavy Melee: 0.8</td></tr>
+<tr><td><b>Quick Slash</b><br><i>Runs to the end</i><br><i>Cooldown 1.2 s</i></td><td>A fast chain of up to three slashes.<br><i>Melee · 0-2.2 m · wind-up 0.3 s · 9 damage · combo into Quick Slash 2 (70%) · waits for an attack token</i><br>Pairs with Dodge, Flank, Lunge.</td><td>Has Target<br>Has Weapon<br>In Attack Range<br>Can Take Attack Token<br><b>More likely:</b> Target Not Blocking, Behind Target Bonus</td><td>QuickSlash1, QuickSlash2, QuickSlash3 animations<br>A weapon in hand</td><td>Agile Melee: 0.75</td></tr>
+<tr><td><b>Lunge</b><br><i>Runs to the end</i><br><i>Cooldown 3 s</i></td><td>Lunges in from mid range. It does not turn during the wind-up, so it can be sidestepped.<br><i>Melee · 2.5-6 m · wind-up 0.45 s · 15 damage · waits for an attack token</i><br>Pairs with Quick Slash, Dodge.</td><td>Has Target<br>Has Weapon<br>In Attack Range<br>Can Take Attack Token<br><b>More likely:</b> Target Not Blocking</td><td>Lunge animation<br>A weapon in hand</td><td>Agile Melee: 0.8</td></tr>
+<tr><td><b>Kick</b><br><i>Runs to the end</i><br><i>Cooldown 3 s</i></td><td>A quick kick that pushes a player away when they get too close.<br><i>Melee · 0-1.8 m · wind-up 0.35 s · 5 damage · no attack token</i><br>Pairs with Back Off, Arrow Shot.</td><td>Has Target<br>In Attack Range</td><td>Kick animation</td><td>Archer: 0.85</td></tr>
+<tr><td><b>Dive</b><br><i>Runs to the end</i><br><i>Cooldown 2.5 s</i></td><td>A flyer's dive straight at the player and past them.<br><i>Charge · 0-7 m · wind-up 0.5 s · 6 damage · waits for an attack token</i><br>Pairs with Circle, Chase.</td><td>Has Target<br>In Attack Range<br>Can Take Attack Token</td><td>Windup, Attack, Recover animations</td><td>Swarm: 0.75</td></tr>
+<tr><td><b>Boss Swipe</b><br><i>Runs to the end</i><br><i>Cooldown 2 s</i></td><td>A three-swipe combo that can end in a slam.<br><i>Melee · 0-3.2 m · wind-up 0.6 s · 18 damage · combo into Boss Swipe 2 (80%) · waits for an attack token</i><br>Pairs with Boss Slam, Circle.</td><td>Has Target<br>In Attack Range<br>Can Take Attack Token</td><td>Sweep1, Sweep2, Sweep3, Slam animations</td><td>Boss: 0.75</td></tr>
+<tr><td><b>Boss Charge</b><br><i>Runs to the end</i><br><i>Cooldown 6 s</i></td><td>A charge that hits anything in the way.<br><i>Charge · 7-18 m · wind-up 0.8 s · 28 damage · unblockable · waits for an attack token</i><br>Pairs with Boss Swipe, Boulder Throw.</td><td>Has Target<br>In Attack Range<br>Can See Target<br>Can Take Attack Token<br><b>More likely:</b> Punish Healing</td><td>ChargeWindup, ChargeRun, ChargeRecover animations</td><td>Boss: 0.8</td></tr>
+<tr><td><b>Delayed Smash</b><br><i>Runs to the end</i><br><i>Cooldown 8 s</i></td><td>A long wind-up that catches early dodges.<br><i>Melee · 0-3.5 m · wind-up 1.6 s · 35 damage · unblockable · waits for an attack token</i><br>Pairs with Boss Swipe, Guard.</td><td>Has Target<br>In Attack Range<br>Can Take Attack Token<br><b>More likely:</b> Target Spams Dodge, Guard Breaker Bonus</td><td>DelayedSmash animation</td><td>Boss: 0.7</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-ranged-and-area-attacks"><span class="hnum">10.5</span> Ranged and area attacks</h2>
+<p>Shots, spells and attacks that hit an area. Each plays an Attack Data asset.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Ground Slam</b><br><i>Runs to the end</i><br><i>Cooldown 6 s</i></td><td>Slams the ground, hitting everything around it.<br><i>Area · 0-3.5 m · wind-up 1.2 s · 25 damage · unblockable · waits for an attack token</i><br>Pairs with Heavy Smash, Guard.</td><td>Has Target<br>In Attack Range<br>Can Take Attack Token<br><b>More likely:</b> Guard Breaker Bonus</td><td>GroundSlam animation</td><td>Heavy Melee: 0.7</td></tr>
+<tr><td><b>Arrow Shot</b><br><i>Runs to the end</i><br><i>Cooldown 1.6 s</i></td><td>An arrow aimed where the player is heading.<br><i>Projectile · 4-22 m · wind-up 0.8 s · 10 damage · no attack token</i><br>Pairs with Find Clear Shot, Back Off, Kick.</td><td>Has Target<br>In Attack Range With Line Of Sight</td><td>Shoot animation<br>Projectile: fires Arrow</td><td>Archer: 0.75</td></tr>
+<tr><td><b>Triple Shot</b><br><i>Runs to the end</i><br><i>Cooldown 6 s</i></td><td>Three arrows in a spread.<br><i>Projectile · 4-14 m · wind-up 1.1 s · 8 damage × 3 · no attack token</i><br>Pairs with Arrow Shot, Seek High Ground.</td><td>Has Target<br>In Attack Range With Line Of Sight<br><b>More likely:</b> Random Variety</td><td>TripleShot animation<br>Projectile: fires Arrow</td><td>Archer: 0.7</td></tr>
+<tr><td><b>Fireball</b><br><i>Runs to the end</i><br><i>Cooldown 2.5 s</i></td><td>A fireball that explodes where it lands.<br><i>Projectile · 3-16 m · wind-up 0.9 s · 14 damage · no attack token</i><br>Pairs with Teleport, Keep Distance, Fire Circle.</td><td>Has Target<br>In Attack Range With Line Of Sight</td><td>CastFireball animation<br>Projectile: fires Fireball</td><td>Mage: 0.7</td></tr>
+<tr><td><b>Fire Circle</b><br><i>Runs to the end</i><br><i>Cooldown 7 s</i></td><td>A circle of fire placed where the player stood when the cast began: step out of the disc.<br><i>Area · 3-14 m · wind-up 1.4 s · 22 damage · unblockable · no attack token</i><br>Pairs with Fireball, Keep Distance.</td><td>Has Target<br>In Attack Range</td><td>CastChannel, Recover animations</td><td>Mage: 0.75</td></tr>
+<tr><td><b>Cannon Shot</b><br><i>Runs to the end</i><br><i>Cooldown 1.8 s</i></td><td>A cannon shell. A shell the player reflects hurts it badly.<br><i>Projectile · 3-15 m · wind-up 0.6 s · 8 damage · no attack token</i><br>Pairs with Hide, Emerge.</td><td>Has Target<br>Is Not Hidden<br>In Attack Range With Line Of Sight</td><td>CannonShot animation<br>Projectile: fires Cannon Shell</td><td>Pop-up Shooter: 0.75</td></tr>
+<tr><td><b>Boss Slam</b><br><i>Runs to the end</i><br><i>Cooldown 6 s</i></td><td>A slam that hits everything around it.<br><i>Area · 0-4 m · wind-up 1 s · 30 damage · unblockable · waits for an attack token</i><br>Pairs with Boss Swipe, Guard.</td><td>Has Target<br>In Attack Range<br>Can Take Attack Token<br><b>More likely:</b> Guard Breaker Bonus</td><td>Slam animation</td><td>Boss: 0.7</td></tr>
+<tr><td><b>Boulder Throw</b><br><i>Runs to the end</i><br><i>Cooldown 5 s</i></td><td>A boulder that explodes where it lands.<br><i>Projectile · 8-20 m · wind-up 1 s · 20 damage · no attack token</i><br>Pairs with Boss Charge, Chase.</td><td>Has Target<br>In Attack Range With Line Of Sight</td><td>BoulderThrow animation<br>Projectile: fires Boulder</td><td>Boss: 0.7</td></tr>
+<tr><td><b>Fire Ring</b><br><i>Runs to the end</i><br><i>Cooldown 9 s</i></td><td>A ring of fire around itself.<br><i>Area · 0-6 m · wind-up 1.3 s · 30 damage · unblockable · waits for an attack token</i><br>Pairs with Phase Roar, Summon Swarm.</td><td>Has Target<br>In Attack Range<br>Can Take Attack Token<br>Phase 2 Or Later</td><td>FireRing animation<br>Boss phases (Enemy ▸ Phase Thresholds)</td><td>Boss: 0.85</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-defence"><span class="hnum">10.6</span> Defence</h2>
+<p>Blocking and dodging the player's attacks.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Guard</b><br><i>Runs to the end</i><br><i>Cooldown 3-7 s</i></td><td>Raises its guard (95% of the time, times the difficulty's Guard Chance). Hits from the front lose 90% of their damage and drain its 50 guard points; hits from the side or behind land in full, and an empty meter breaks the guard. It counters 30% of the time after a block.<br>Pairs with any melee attack, Dodge.</td><td>Has Target<br>Close To Target (under 5m)<br>Target Facing Me<br>Has Weapon</td><td>Guard animation<br>A weapon in hand</td><td>Melee Soldier: 0.85<br>Heavy Melee, Agile Melee: 0.9<br>Boss: 0.8</td></tr>
+<tr><td><b>Dodge</b><br><i>Runs to the end</i><br><i>Cooldown 1.5 s</i></td><td>Dashes 3.5 m out of the way as the player swings, and cannot be hurt during the dash. It gets away 90% of the time, times the difficulty's Dodge Chance.<br>Pairs with Quick Slash, Lunge, Guard.</td><td>Has Target<br>Target Is Attacking<br>Close To Target (under 5m)</td><td>DodgeBack, DodgeSide animations</td><td>Agile Melee: 0.95</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-evasion-and-cover"><span class="hnum">10.7</span> Evasion and cover</h2>
+<p>Backing off, taking cover, hiding, fleeing and teleporting away.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Flee</b><br><i>Interruptible</i><br><i>Cooldown 8 s</i></td><td>Runs away from the player for 3 s, to a spot 10-20 m away that the player cannot see when there is one.<br>Pairs with Alert Allies, Take Cover.</td><td>Is Alert<br>Low Health<br><b>More likely:</b> Few Allies Nearby</td><td>Alert animation<br>Walls, pillars or rocks to hide behind</td><td>Melee Soldier: 0.9</td></tr>
+<tr><td><b>Take Cover</b><br><i>Interruptible</i><br><i>Cooldown 8-10 s</i></td><td>Runs to a spot 6-16 m away that the player cannot see and crouches there for 2-4 s, recovering 4 health a second. It leaves if the player comes within 4 m.<br>Pairs with any ranged attack, Find Clear Shot, Flee.</td><td>Has Target<br>Recently Hit<br>Hurt (under 75%)</td><td>CrouchIdle animation<br>Walls, pillars or rocks to hide behind</td><td>Archer: 0.9<br>Mage: 0.85</td></tr>
+<tr><td><b>Back Off</b><br><i>Interruptible</i><br><i>Cooldown 1 s</i></td><td>Backs away while still facing the player, until it is 8 m away.<br>Pairs with any ranged attack, Kick, Teleport.</td><td>Has Target<br>Very Close To Target (under 4m)</td><td>Nothing special</td><td>Archer: 0.8</td></tr>
+<tr><td><b>Teleport</b><br><i>Runs to the end</i><br><i>Cooldown 6 s</i></td><td>Vanishes and reappears 9-14 m from the player with a clear shot, and cannot be hurt while it warps.<br>Pairs with Fireball, Fire Circle, Keep Distance.</td><td>Has Target<br>Very Close To Target (under 4m)</td><td>TeleportOut, TeleportIn animations</td><td>Mage: 0.9</td></tr>
+<tr><td><b>Keep Distance</b><br><i>Interruptible</i><br><i>Cooldown 2 s</i></td><td>Backs away while still facing the player, until it is 9 m away.<br>Pairs with any ranged attack, Kick, Teleport.</td><td>Has Target<br>Close To Target (under 5m)</td><td>Nothing special</td><td>Mage: 0.6</td></tr>
+<tr><td><b>Hide</b><br><i>Runs to the end</i></td><td>Ducks out of reach, where it cannot be hurt. It needs Emerge to come back up.<br>Pairs with Emerge, Cannon Shot.</td><td>Is Not Hidden<br>Should Hide</td><td>Hide animation<br>Emerge as well</td><td>Pop-up Shooter: 0.95</td></tr>
+<tr><td><b>Emerge</b><br><i>Runs to the end</i></td><td>Comes back up after hiding. It needs Hide.<br>Pairs with Hide.</td><td>Is Hidden<br>Hidden For 1.5s<br>Target Beyond 4.5m</td><td>PopUp animation<br>Hide as well</td><td>Pop-up Shooter: 0.9</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-group-tactics"><span class="hnum">10.8</span> Group tactics</h2>
+<p>Moves that use allies: waiting a turn to attack, getting behind the player.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Circle</b><br><i>Interruptible</i></td><td>Strafes around the player just inside its own reach while it waits for its turn to attack (an attack token), so a group sizes the player up instead of queueing, and it can strike straight from the circle.<br>Pairs with Chase, Flank, any melee attack.</td><td>Has Target<br>Near Target (under 8m)<br><b>More likely:</b> Random Variety</td><td>Nothing special</td><td>Melee Soldier: 0.45<br>Heavy Melee: 0.35<br>Agile Melee, Swarm: 0.5<br>Boss: 0.3</td></tr>
+<tr><td><b>Flank</b><br><i>Interruptible</i><br><i>Cooldown 3-4 s</i></td><td>While the player faces it, it runs round to their side or back, on the side with fewer allies, so a player guarding against one enemy is open to another.<br>Pairs with Soldier Slash, Quick Slash, Circle.</td><td>Has Target<br>Near Target (under 8m)<br>Target Facing Me<br>Has Allies Nearby</td><td>Allies in its group</td><td>Melee Soldier: 0.6<br>Agile Melee: 0.65</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-support"><span class="hnum">10.9</span> Support</h2>
+<p>Helping allies: healing them and summoning more.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Summon Swarm</b><br><i>Runs to the end</i><br><i>Cooldown 18-20 s</i></td><td>Channels for 1.2 s, then summons 3 Swarm that join its group already alert (at most 4 alive). Interrupting the cast cancels it.<br>Pairs with Keep Distance, Teleport.</td><td>Has Target<br>Few Minions</td><td>Summon animation<br>Minions: summons Swarm</td><td>Mage, Boss: 0.8</td></tr>
+<tr><td><b>Heal Ally</b><br><i>Runs to the end</i><br><i>Cooldown 6 s</i></td><td>Heals its most wounded nearby ally by 35 after a 1 s cast. Players learn to take the healer out first.<br>Pairs with Keep Distance, Take Cover, Alert Allies.</td><td>Ally Needs Healing</td><td>CastHeal animation<br>Allies in its group</td><td>Mage: 0.85</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-weapons-and-props"><span class="hnum">10.10</span> Weapons and props</h2>
+<p>Arming up and throwing things.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Pick Up Weapon</b><br><i>Interruptible</i></td><td>When it has no weapon, it runs to the nearest dropped weapon or Weapon Rack and arms itself, giving the player a window to strike.<br>Pairs with Soldier Punch.</td><td>Is Alert<br>Has No Weapon<br>Weapon Nearby</td><td>PickUp animation<br>Runs once it has lost its weapon<br>A hand to hold weapons (Weapon Socket)<br>Weapon racks or weapons on the ground in the level</td><td>Melee Soldier: 0.8<br>Heavy Melee: 0.75<br>Agile Melee: 0.85</td></tr>
+<tr><td><b>Throw Barrel</b><br><i>Runs to the end</i><br><i>Cooldown 9-10 s</i></td><td>Picks up the nearest throwable (an explosive barrel, a crate or a rock) and lobs it at a player 4-16 m away.<br>Pairs with Chase, Taunt.</td><td>Has Target<br>Throwable Nearby<br>Mid Range (4-15m)</td><td>PickUp, Throw animations<br>Throwables in the level (a Throwable component)</td><td>Melee Soldier: 0.6<br>Heavy Melee: 0.65</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-personality"><span class="hnum">10.11</span> Personality</h2>
+<p>Taunts and emotes that show character and give the player an opening.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Taunt</b><br><i>Runs to the end</i><br><i>Cooldown 8-12 s</i></td><td>Shows off at the player for 2 s, giving them an opening.<br>Pairs with Chase, any melee attack.</td><td>Has Target<br>Mid Range (4-15m)<br><b>More likely:</b> Random Variety</td><td>Taunt animation</td><td>Melee Soldier: 0.5<br>Agile Melee: 0.45</td></tr>
+<tr><td><b>Beat Chest</b><br><i>Runs to the end</i><br><i>Cooldown 10 s</i></td><td>Shows off at the player for 2 s, giving them an opening.<br>Pairs with Chase, any melee attack.</td><td>Has Target<br>Mid Range (4-15m)<br><b>More likely:</b> Random Variety</td><td>Taunt animation</td><td>Heavy Melee: 0.45</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-special"><span class="hnum">10.12</span> Special</h2>
+<p>Boss phases and your own action types.</p>
+<table class="mid catalog">
+<colgroup><col style="width:15%"><col style="width:35%"><col style="width:18%"><col style="width:16%"><col style="width:16%"></colgroup>
+<thead><tr><th>Behaviour</th><th>What it does</th><th>Only when</th><th>Needs</th><th>On: weight</th></tr></thead>
+<tbody>
+<tr><td><b>Phase Roar</b><br><i>Runs to the end</i></td><td>Opens each new boss phase with a 1.6 s roar that cannot be interrupted or hurt and pushes everything within 6 m back. It runs once per phase change, so the enemy needs Phase Thresholds.<br>Pairs with Fire Ring, Summon Swarm.</td><td>Pending Roar</td><td>Roar animation<br>Boss phases (Enemy ▸ Phase Thresholds)</td><td>Boss: 1</td></tr>
+</tbody>
+</table>
+<h2 id="ch-behaviour-catalog-starter-template-and-recipes"><span class="hnum">10.13</span> Starter template and recipes</h2>
+<p>Made only by mixing the behaviours above with the New Enemy wizard's builder: a Prefab Variant of an archetype, some behaviours left out, others copied in from other archetypes, and some weights changed. No new code, considerations or attacks. The template is in <code>Prefabs/Templates</code>, the recipes in <code>Prefabs/Recipes</code>.</p>
+<p><strong>Starter Humanoid Enemy</strong>, a Prefab Variant of the Melee Soldier. The essentials of a humanoid with a weapon: it idles and patrols, investigates noises, chases, circles while it waits for its turn, slashes, and flees when badly hurt and alone.</p>
+<ul>
+<li><strong>Left out:</strong> Alert Allies, Pick Up Weapon, Flank, Soldier Punch, Throw Barrel, Guard, Taunt</li>
+<li><strong>Settings:</strong> Drop Weapon When Parried off and Drop Weapon Chance On Stagger 0, so its one attack (which needs a weapon) always works. For a disarmable enemy, make one from it with New Enemy…, tick Pick Up Weapon and Soldier Punch, and turn the drops back on there. Circle keeps the Melee Soldier's automatic ring (Radius 0), just inside its reach: 2.1 m with Soldier Slash's 2.4 m, so it can swing straight from the circle, and the ring follows if an enemy made from it gets another attack.</li>
+<li><strong>Behaviours:</strong> Idle 0.2, Patrol 0.25, Investigate 0.4, Chase 0.55, Circle 0.45, Soldier Slash 0.75, Flee 0.9</li>
+</ul>
+<p><strong>Assassin</strong>, a Prefab Variant of the Agile Melee. Slips behind you while you face it, strikes from behind, dodges your swings, and backs off into cover when it has been hurt.</p>
+<ul>
+<li><strong>Left out:</strong> Guard, Taunt</li>
+<li><strong>Added:</strong> Take Cover (from the Archer)</li>
+<li><strong>Weights:</strong> Flank 0.65 → 0.9, Quick Slash 0.75 → 0.85, Lunge 0.8 → 0.5, Circle 0.5 → 0.35</li>
+<li><strong>Behaviours:</strong> Idle 0.2, Investigate 0.4, Chase 0.55, Circle 0.35, Quick Slash 0.85, Lunge 0.5, Soldier Punch 0.65, Pick Up Weapon 0.85, Flank 0.9, Dodge 0.95, Take Cover 0.9</li>
+</ul>
+<p><strong>Berserker</strong>, a Prefab Variant of the Melee Soldier. Never guards and never runs: it charges in from range, slashes and punches hard, hurls barrels and pounds its chest.</p>
+<ul>
+<li><strong>Left out:</strong> Guard, Flee, Flank, Alert Allies</li>
+<li><strong>Added:</strong> Heavy Charge (from the Heavy Melee)</li>
+<li><strong>Weights:</strong> Soldier Slash 0.75 → 0.9, Soldier Punch 0.7 → 0.85, Heavy Charge 0.8 → 1, Chase 0.55 → 0.6, Circle 0.45 → 0.25, Taunt 0.5 → 0.6, Pick Up Weapon 0.8 → 0.9</li>
+<li><strong>Behaviours:</strong> Idle 0.2, Patrol 0.25, Investigate 0.4, Pick Up Weapon 0.9, Chase 0.6, Circle 0.25, Soldier Slash 0.9, Soldier Punch 0.85, Throw Barrel 0.6, Taunt 0.6, Heavy Charge 1</li>
+</ul>
+<p><strong>Sniper</strong>, a Prefab Variant of the Archer. Keeps its distance: looks for high ground and clear shots, fires single aimed arrows, backs away when you close in, and runs when hurt and alone.</p>
+<ul>
+<li><strong>Left out:</strong> Triple Shot, Kick</li>
+<li><strong>Added:</strong> Flee (from the Melee Soldier)</li>
+<li><strong>Weights:</strong> Arrow Shot 0.75 → 0.85, Find Clear Shot 0.7 → 0.8, Seek High Ground 0.4 → 0.75, Back Off 0.8 → 0.95</li>
+<li><strong>Behaviours:</strong> Idle 0.2, Alert Allies 0.85, Arrow Shot 0.85, Find Clear Shot 0.8, Seek High Ground 0.75, Take Cover 0.9, Back Off 0.95, Flee 0.9</li>
+</ul>
+<p><strong>Medic</strong>, a Prefab Variant of the Mage. Heals wounded allies, keeps its distance, raises the alarm, and only throws the odd fireball to defend itself.</p>
+<ul>
+<li><strong>Left out:</strong> Fire Circle, Summon Swarm, Teleport</li>
+<li><strong>Added:</strong> Alert Allies (from the Melee Soldier)</li>
+<li><strong>Weights:</strong> Heal Ally 0.85 → 0.95, Keep Distance 0.6 → 0.8, Fireball 0.7 → 0.45, Find Clear Shot 0.5 → 0.4</li>
+<li><strong>Behaviours:</strong> Idle 0.2, Investigate 0.4, Fireball 0.45, Heal Ally 0.95, Take Cover 0.85, Keep Distance 0.8, Find Clear Shot 0.4, Alert Allies 0.85</li>
+</ul>
+</section></main></div>
+<div class="foot">RPG Enemies 1.0 &middot; 24 September 2026 &middot; TinnyStudios &middot; Support: <a href="mailto:tinnystudios@gmail.com">tinnystudios@gmail.com</a></div>
+<script>if (matchMedia('(min-width: 901px)').matches) document.querySelector('.side details').open = true;</script>
+</body></html>
